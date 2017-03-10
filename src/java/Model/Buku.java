@@ -5,11 +5,19 @@
  */
 package Model;
 
+import Control.DatabaseManager;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 /**
  *
  * @author budhidarmap
  */
 public class Buku {
+
     private String ID_Buku;
     private String ISBN;
     private String Judul;
@@ -74,4 +82,45 @@ public class Buku {
         this.Ketersediaan = Ketersediaan;
     }
 
+    public static Buku[] getListPencarian(String key) {
+        Connection conn = null;
+        Statement st = null;
+        ResultSet rs = null;
+        conn = DatabaseManager.getDBConnection();
+        Buku bk[] = null;
+        try {
+            st = conn.createStatement();
+//            rs = st.executeQuery("SELECT COUNT (*) "
+//                    + "TOTAL FROM RPL_TAGIHAN WHERE (NIS = '" + nis + "'"
+//                    + "AND STATUS_PEMBAYARAN=0)");
+            rs.next();
+            bk = new Buku[rs.getInt(1)];
+//            rs = st.executeQuery("SELECT *"
+//                    + "FROM RPL_TAGIHAN WHERE (NIS = '" + nis + "'"
+//                    + "AND STATUS_PEMBAYARAN=0)");
+            int index = 0;
+            while (rs.next()) {
+                bk[index] = new Buku();
+                bk[index].setID_Buku(rs.getString(1));
+                bk[index].setISBN(rs.getString(2));
+                bk[index].setJudul(rs.getString(3));
+                bk[index].setPenulis(rs.getString(4));
+                bk[index].setTahun_Terbit(rs.getInt(5));
+                bk[index].setPenerbit(rs.getString(6));
+                bk[index].setKetersediaan(rs.getInt(7));
+                index++;
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        } finally {
+            try {
+                rs.close();
+                st.close();
+                conn.close();
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        return bk;
+    }
 }

@@ -5,6 +5,11 @@
  */
 package Model;
 
+import Control.DatabaseManager;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 /**
  *
  * @author budhidarmap
@@ -27,5 +32,29 @@ public class Anggota {
 
     public void setID_Angota(String ID_Angota) {
         this.ID_Angota = ID_Angota;
+    }
+    public static void simpanPeminjaman(Pinjam p) {
+        String text = null;
+        Connection conn = null;
+        PreparedStatement ps = null;
+        conn = DatabaseManager.getDBConnection();
+        try {
+            ps = conn.prepareCall("INSERT INTO RPL_PEMBAYARAN VALUES(?,?,?,?,TO_DATE(?, 'DD-MM-YYYY'))");
+            ps.setString(1, p.getID_Buku());
+            ps.setString(2, p.getID_Peminjam());
+            ps.setString(3, p.getTanggal_kembali());
+            ps.setString(4, p.getTanggal_pinjam());
+            ps.executeUpdate();
+            conn.commit();
+            text = "Data sudah ditambahkan";
+
+        } catch (SQLException ex) {
+        } finally {
+            try {
+                ps.close();
+                conn.close();
+            } catch (SQLException ex) {
+            }
+        }
     }
 }
