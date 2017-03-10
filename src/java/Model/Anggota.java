@@ -10,5 +10,22 @@ package Model;
  * @author budhidarmap
  */
 public class Anggota {
-    
+    private String Nama;
+    private String ID_Angota;
+
+    public String getNama() {
+        return Nama;
+    }
+
+    public void setNama(String Nama) {
+        this.Nama = Nama;
+    }
+
+    public String getID_Angota() {
+        return ID_Angota;
+    }
+
+    public void setID_Angota(String ID_Angota) {
+        this.ID_Angota = ID_Angota;
+    }
 }
