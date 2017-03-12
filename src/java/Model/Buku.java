@@ -90,14 +90,24 @@ public class Buku {
         Buku bk[] = null;
         try {
             st = conn.createStatement();
-//            rs = st.executeQuery("SELECT COUNT (*) "
-//                    + "TOTAL FROM RPL_TAGIHAN WHERE (NIS = '" + nis + "'"
-//                    + "AND STATUS_PEMBAYARAN=0)");
+            rs = st.executeQuery("SELECT COUNT (*) TOTAL FROM PTI_BUKU "
+                    + "WHERE ("
+                    + "ID LIKE '%"+key+"%' OR "
+                    + "ISBN LIKE '%"+key+"%' OR  "
+                    + "JUDUL LIKE '%"+key+"%' OR "
+                    + "PENERBIT LIKE '%"+key+"%' OR "
+                    + "PENGARANG LIKE '%"+key+"%' OR "
+                    + "TH_TERBIT LIKE '%"+key+"%')");
             rs.next();
             bk = new Buku[rs.getInt(1)];
-//            rs = st.executeQuery("SELECT *"
-//                    + "FROM RPL_TAGIHAN WHERE (NIS = '" + nis + "'"
-//                    + "AND STATUS_PEMBAYARAN=0)");
+            rs = st.executeQuery("SELECT * FROM PTI_BUKU "
+                    + "WHERE ("
+                    + "ID LIKE '%"+key+"%' OR "
+                    + "ISBN LIKE '%"+key+"%' OR  "
+                    + "JUDUL LIKE '%"+key+"%' OR "
+                    + "PENERBIT LIKE '%"+key+"%' OR "
+                    + "PENGARANG LIKE '%"+key+"%' OR "
+                    + "TH_TERBIT LIKE '%"+key+"%')");
             int index = 0;
             while (rs.next()) {
                 bk[index] = new Buku();
