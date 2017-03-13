@@ -66,12 +66,13 @@ public class Pinjam {
         PreparedStatement ps = null;
         conn = DatabaseManager.getDBConnection();
         try {
-            ps = conn.prepareCall("INSERT INTO RPL_PEMBAYARAN VALUES(?,?,?,?,TO_DATE(?, 'DD-MM-YYYY'))");
-            ps.setString(1, p.getID_Buku());
-            ps.setString(2, p.getID_Peminjam());
-            ps.setString(3, p.getTanggal_kembali());
+            ps = conn.prepareCall("INSERT INTO PTI_PINJAM VALUES"
+                    + "(?,?,TO_DATE(?, 'DD-MM-YYYY'),?,TO_DATE(?, 'DD-MM-YYYY'))");
+            ps.setString(1, p.getID_Peminjam());
+            ps.setString(2, p.getID_Buku());
+            ps.setString(3, p.getTanggal_pinjam());
             ps.setInt(4, p.getWaktu_pinjam());
-            ps.setString(5, p.getTanggal_pinjam());
+            ps.setString(5, p.getTanggal_kembali());
             ps.executeUpdate();
             conn.commit();
             text = "Data sudah ditambahkan";
