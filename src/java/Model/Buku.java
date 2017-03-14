@@ -74,7 +74,7 @@ public class Buku {
         this.Penerbit = Penerbit;
     }
 
-    public boolean getKetersediaan() {
+    public boolean isKetersediaan() {
         return Ketersediaan;
     }
 
@@ -107,7 +107,8 @@ public class Buku {
                     + "JUDUL LIKE '%"+key+"%' OR "
                     + "PENERBIT LIKE '%"+key+"%' OR "
                     + "PENGARANG LIKE '%"+key+"%' OR "
-                    + "TH_TERBIT LIKE '%"+key+"%')");
+                    + "TH_TERBIT LIKE '%"+key+"%'"
+                    + "AND KETERSEDIAAN IS Y)");
             int index = 0;
             while (rs.next()) {
                 bk[index] = new Buku();

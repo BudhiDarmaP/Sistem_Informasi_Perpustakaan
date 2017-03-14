@@ -42,7 +42,7 @@ public class Anggota {
         conn = DatabaseManager.getDBConnection();
         try {
             ps = conn.prepareCall("INSERT INTO PTI_PINJAM VALUES"
-                    + "(?,?,TO_DATE(?, 'DD-MM-YYYY'),?)");
+                    + "('?',?,TO_DATE('?', 'DD-MM-YYYY'),?,NULL)");
             ps.setString(1, p.getID_Peminjam());
             ps.setString(2, p.getID_Buku());
             ps.setString(3, p.getTanggal_pinjam());

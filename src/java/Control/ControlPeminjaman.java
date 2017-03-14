@@ -68,7 +68,7 @@ public class ControlPeminjaman extends HttpServlet {
                             + "<td>"+bk[i].getPenulis()+"</td>"
                             + "<td>"+bk[i].getPenerbit()+"</td>"
                             + "<td>"+bk[i].getTahun_Terbit()+"</td>"
-                            + "<td>"+bk[i].getKetersediaan()+"</td>");
+                            + "<td>"+bk[i].isKetersediaan()+"</td>");
                 }
             }
             out.println("</table>");
