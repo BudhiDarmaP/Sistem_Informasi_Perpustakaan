@@ -8,7 +8,9 @@ package Model;
 import Control.DatabaseManager;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  *
@@ -60,30 +62,54 @@ public class Pinjam {
     public void setTanggal_kembali(String tanggal_kembali) {
         this.tanggal_kembali = tanggal_kembali;
     }
-    public static void Pengembalian(Pinjam p) {
+    public static String UbahStatusKetersediaan(String idbuku) {
         String text = null;
         Connection conn = null;
         PreparedStatement ps = null;
+        Statement st = null;
+        ResultSet rs = null;
         conn = DatabaseManager.getDBConnection();
         try {
-            ps = conn.prepareCall("INSERT INTO PTI_PINJAM VALUES"
-                    + "(?,?,TO_DATE(?, 'DD-MM-YYYY'),?,TO_DATE(?, 'DD-MM-YYYY'))");
-            ps.setString(1, p.getID_Peminjam());
-            ps.setString(2, p.getID_Buku());
-            ps.setString(3, p.getTanggal_pinjam());
-            ps.setInt(4, p.getWaktu_pinjam());
-            ps.setString(5, p.getTanggal_kembali());
+            ps = conn.prepareCall("UPDATE PTI_BUKU SET KETERSEDIAAN '?' WHERE ID ='?'");
+            ps.setBoolean(1, true);
+            ps.setString(2, idbuku);
             ps.executeUpdate();
             conn.commit();
-            text = "Data sudah ditambahkan";
-
         } catch (SQLException ex) {
+
         } finally {
             try {
                 ps.close();
                 conn.close();
             } catch (SQLException ex) {
+
             }
         }
+        return text;
+    }
+    public static String Pengembalian(String kembali, String id) {
+        String text = null;
+        Connection conn = null;
+        PreparedStatement ps = null;
+        Statement st = null;
+        ResultSet rs = null;
+        conn = DatabaseManager.getDBConnection();
+        try {
+            ps = conn.prepareCall("UPDATE PTI_PINJAM SET TANGGAL_KEMBALI '?' WHERE ID ='?'");
+            ps.setString(1, kembali);
+            ps.setString(2, id);
+            ps.executeUpdate();
+            conn.commit();
+        } catch (SQLException ex) {
+
+        } finally {
+            try {
+                ps.close();
+                conn.close();
+            } catch (SQLException ex) {
+
+            }
+        }
+        return text;
     }
 }

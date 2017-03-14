@@ -8,7 +8,9 @@ package Model;
 import Control.DatabaseManager;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  *
@@ -40,12 +42,11 @@ public class Anggota {
         conn = DatabaseManager.getDBConnection();
         try {
             ps = conn.prepareCall("INSERT INTO PTI_PINJAM VALUES"
-                    + "(?,?,TO_DATE(?, 'DD-MM-YYYY'),?,TO_DATE(?, 'DD-MM-YYYY'))");
+                    + "(?,?,TO_DATE(?, 'DD-MM-YYYY'),?)");
             ps.setString(1, p.getID_Peminjam());
             ps.setString(2, p.getID_Buku());
             ps.setString(3, p.getTanggal_pinjam());
             ps.setInt(4, p.getWaktu_pinjam());
-            ps.setString(5, p.getTanggal_kembali());
             ps.executeUpdate();
             conn.commit();
             text = "Data sudah ditambahkan";
@@ -58,5 +59,42 @@ public class Anggota {
             } catch (SQLException ex) {
             }
         }
+    }
+    public static Pinjam[] getListPeminjaman(String id) {
+        Connection conn = null;
+        Statement st = null;
+        ResultSet rs = null;
+        conn = DatabaseManager.getDBConnection();
+        Pinjam pin[] = null;
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery("SELECT COUNT (*) TOTAL FROM PTI_PINJAM WHERE "
+                    + "(ID_PEMINJAM = '"+id+"')");
+            rs.next();
+            pin = new Pinjam[rs.getInt(1)];
+            rs = st.executeQuery("SELECT COUNT (*) TOTAL FROM PTI_PINJAM WHERE "
+                    + "(ID_PEMINJAM = '"+id+"' AND TANGGAL_KEMBALI=NULL)");
+            int index = 0;
+            while (rs.next()) {
+                pin[index] = new Pinjam();
+                pin[index].setID_Peminjam(rs.getString(1));
+                pin[index].setID_Buku(rs.getString(2));
+                pin[index].setTanggal_pinjam(rs.getString(3));
+                pin[index].setWaktu_pinjam(rs.getInt(4));
+                pin[index].setTanggal_kembali(rs.getString(5));
+                index++;
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        } finally {
+            try {
+                rs.close();
+                st.close();
+                conn.close();
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        return pin;
     }
 }

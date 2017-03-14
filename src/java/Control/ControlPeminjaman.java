@@ -5,8 +5,10 @@
  */
 package Control;
 
+import Model.Buku;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -40,7 +42,36 @@ public class ControlPeminjaman extends HttpServlet {
             out.println("<title>Servlet ControlPeminjaman</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ControlPeminjaman at " + request.getContextPath() + "</h1>");
+             processRequest(request, response);
+            String key = request.getParameter("key");
+            Buku[] bk = Buku.getListPencarian(key);
+            if (Buku.getListPencarian(key) == null) {
+                RequestDispatcher dispatcher;
+                request.setAttribute("error", "Pencarian Buku Tidak Ditemukan");
+                dispatcher = request.getRequestDispatcher("error.jsp");
+                dispatcher.forward(request, response);
+            } else {
+                out.print("<table>"
+                        + "<tr><td>No"
+                        + "<td>ID</td>"
+                        + "<td>ISBN</td>"
+                        + "<td>Judul</td>"
+                        + "<td>Pengarang</td>"
+                        + "<td>Penerbit</td>"
+                        + "<td>Tahun Terbit</td>"
+                        + "<td>Ketersediaan</td></tr>");
+                for (int i = 0; i < bk.length; i++) {
+                    out.print("<tr><td>"+(i+1)
+                            + "<td>"+bk[i].getID_Buku()+"</td>"
+                            + "<td>"+bk[i].getISBN()+"</td>"
+                            + "<td>"+bk[i].getJudul()+"</td>"
+                            + "<td>"+bk[i].getPenulis()+"</td>"
+                            + "<td>"+bk[i].getPenerbit()+"</td>"
+                            + "<td>"+bk[i].getTahun_Terbit()+"</td>"
+                            + "<td>"+bk[i].getKetersediaan()+"</td>");
+                }
+            }
+            out.println("</table>");
             out.println("</body>");
             out.println("</html>");
         }
