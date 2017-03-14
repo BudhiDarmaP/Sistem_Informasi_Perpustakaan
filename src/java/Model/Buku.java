@@ -24,7 +24,7 @@ public class Buku {
     private String Penulis;
     private int Tahun_Terbit;
     private String Penerbit;
-    private int Ketersediaan;
+    private boolean Ketersediaan;
 
     public String getID_Buku() {
         return ID_Buku;
@@ -74,11 +74,11 @@ public class Buku {
         this.Penerbit = Penerbit;
     }
 
-    public int getKetersediaan() {
+    public boolean getKetersediaan() {
         return Ketersediaan;
     }
 
-    public void setKetersediaan(int Ketersediaan) {
+    public void setKetersediaan(boolean Ketersediaan) {
         this.Ketersediaan = Ketersediaan;
     }
 
@@ -117,7 +117,7 @@ public class Buku {
                 bk[index].setPenulis(rs.getString(4));
                 bk[index].setTahun_Terbit(rs.getInt(5));
                 bk[index].setPenerbit(rs.getString(6));
-                bk[index].setKetersediaan(rs.getInt(7));
+                bk[index].setKetersediaan(rs.getBoolean(7));
                 index++;
             }
         } catch (SQLException ex) {
