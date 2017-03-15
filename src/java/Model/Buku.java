@@ -17,22 +17,13 @@ import java.sql.Statement;
  * @author budhidarmap
  */
 public class Buku {
-
-    private String ID_Buku;
+    
     private String ISBN;
     private String Judul;
     private String Penulis;
-    private int Tahun_Terbit;
+    private String Tahun_Terbit;
     private String Penerbit;
-    private boolean Ketersediaan;
-
-    public String getID_Buku() {
-        return ID_Buku;
-    }
-
-    public void setID_Buku(String ID_Buku) {
-        this.ID_Buku = ID_Buku;
-    }
+    private int Ketersediaan;
 
     public String getISBN() {
         return ISBN;
@@ -58,11 +49,11 @@ public class Buku {
         this.Penulis = Penulis;
     }
 
-    public int getTahun_Terbit() {
+    public String getTahun_Terbit() {
         return Tahun_Terbit;
     }
 
-    public void setTahun_Terbit(int Tahun_Terbit) {
+    public void setTahun_Terbit(String Tahun_Terbit) {
         this.Tahun_Terbit = Tahun_Terbit;
     }
 
@@ -74,11 +65,11 @@ public class Buku {
         this.Penerbit = Penerbit;
     }
 
-    public boolean isKetersediaan() {
+    public int getKetersediaan() {
         return Ketersediaan;
     }
 
-    public void setKetersediaan(boolean Ketersediaan) {
+    public void setKetersediaan(int Ketersediaan) {
         this.Ketersediaan = Ketersediaan;
     }
 
@@ -92,33 +83,31 @@ public class Buku {
             st = conn.createStatement();
             rs = st.executeQuery("SELECT COUNT (*) TOTAL FROM PTI_BUKU "
                     + "WHERE ("
-                    + "ID LIKE '%"+key+"%' OR "
                     + "ISBN LIKE '%"+key+"%' OR  "
                     + "JUDUL LIKE '%"+key+"%' OR "
+                    + "PENULIS LIKE '%"+key+"%' OR "
                     + "PENERBIT LIKE '%"+key+"%' OR "
-                    + "PENGARANG LIKE '%"+key+"%' OR "
-                    + "TH_TERBIT LIKE '%"+key+"%')");
+                    + "TAHUN_TERBIT LIKE '%"+key+"%' AND "
+                    + "KETERSEDIAAN > 0)");
             rs.next();
             bk = new Buku[rs.getInt(1)];
             rs = st.executeQuery("SELECT * FROM PTI_BUKU "
                     + "WHERE ("
-                    + "ID LIKE '%"+key+"%' OR "
                     + "ISBN LIKE '%"+key+"%' OR  "
                     + "JUDUL LIKE '%"+key+"%' OR "
+                    + "PENULIS LIKE '%"+key+"%' OR "
                     + "PENERBIT LIKE '%"+key+"%' OR "
-                    + "PENGARANG LIKE '%"+key+"%' OR "
-                    + "TH_TERBIT LIKE '%"+key+"%'"
-                    + "AND KETERSEDIAAN IS Y)");
+                    + "TAHUN_TERBIT LIKE '%"+key+"%' AND "
+                    + "KETERSEDIAAN > 0)");
             int index = 0;
             while (rs.next()) {
                 bk[index] = new Buku();
-                bk[index].setID_Buku(rs.getString(1));
-                bk[index].setISBN(rs.getString(2));
-                bk[index].setJudul(rs.getString(3));
-                bk[index].setPenulis(rs.getString(4));
-                bk[index].setTahun_Terbit(rs.getInt(5));
-                bk[index].setPenerbit(rs.getString(6));
-                bk[index].setKetersediaan(rs.getBoolean(7));
+                bk[index].setISBN(rs.getString(1));
+                bk[index].setJudul(rs.getString(2));
+                bk[index].setPenulis(rs.getString(3));
+                bk[index].setTahun_Terbit(rs.getString(4));
+                bk[index].setPenerbit(rs.getString(5));
+                bk[index].setKetersediaan(rs.getInt(6));
                 index++;
             }
         } catch (SQLException ex) {

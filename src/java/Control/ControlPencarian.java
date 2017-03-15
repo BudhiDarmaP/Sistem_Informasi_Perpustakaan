@@ -43,22 +43,20 @@ public class ControlPencarian extends HttpServlet {
             } else {
                 out.print("<table>"
                         + "<tr><td>No"
-                        + "<td>ID</td>"
                         + "<td>ISBN</td>"
                         + "<td>Judul</td>"
                         + "<td>Pengarang</td>"
-                        + "<td>Penerbit</td>"
                         + "<td>Tahun Terbit</td>"
+                        + "<td>Penerbit</td>"
                         + "<td>Ketersediaan</td></tr>");
                 for (int i = 0; i < bk.length; i++) {
                     out.print("<tr><td>"+(i+1)
-                            + "<td>"+bk[i].getID_Buku()+"</td>"
                             + "<td>"+bk[i].getISBN()+"</td>"
                             + "<td>"+bk[i].getJudul()+"</td>"
                             + "<td>"+bk[i].getPenulis()+"</td>"
-                            + "<td>"+bk[i].getPenerbit()+"</td>"
                             + "<td>"+bk[i].getTahun_Terbit()+"</td>"
-                            + "<td>"+bk[i].isKetersediaan()+"</td>");
+                            + "<td>"+bk[i].getPenerbit()+"</td>"
+                            + "<td>"+bk[i].getKetersediaan()+"</td>");
                 }
             }
             out.println("</table>");

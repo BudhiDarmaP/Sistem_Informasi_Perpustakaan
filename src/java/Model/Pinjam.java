@@ -62,7 +62,7 @@ public class Pinjam {
     public void setTanggal_kembali(String tanggal_kembali) {
         this.tanggal_kembali = tanggal_kembali;
     }
-    public static String UbahStatusKetersediaan(String idbuku) {
+    public static String UpdateKetersediaan(String idbuku) {
         String text = null;
         Connection conn = null;
         PreparedStatement ps = null;
@@ -70,15 +70,19 @@ public class Pinjam {
         ResultSet rs = null;
         conn = DatabaseManager.getDBConnection();
         try {
-            ps = conn.prepareCall("UPDATE PTI_BUKU SET KETERSEDIAAN '?' WHERE ID ='?'");
-            ps.setBoolean(1, true);
-            ps.setString(2, idbuku);
-            ps.executeUpdate();
+            conn.createStatement();
+            rs = st.executeQuery("SELECT KETERSEDIAAN PTI_BUKU WHERE ID ='"+idbuku+"'");
+            Buku b = new Buku();
+            b.setKetersediaan(rs.getInt(1)+1);
+            ps = conn.prepareCall("UPDATE PTI_PINJAM SET KETERSEDIAAN = ? WHERE ID ='"+idbuku+"'");
+            ps.setInt(1, b.getKetersediaan());
             conn.commit();
         } catch (SQLException ex) {
 
         } finally {
             try {
+                rs.close();
+                st.close();
                 ps.close();
                 conn.close();
             } catch (SQLException ex) {
