@@ -62,7 +62,37 @@ public class Pinjam {
     public void setTanggal_kembali(String tanggal_kembali) {
         this.tanggal_kembali = tanggal_kembali;
     }
-    public static String UpdateKetersediaan(String idbuku) {
+    public static String UpdateKetersediaan1(String idbuku) {
+        Connection conn = null;
+        Statement st = null;
+        ResultSet rs = null;
+        conn = DatabaseManager.getDBConnection();
+        Buku b = new Buku();
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery("SELECT * FROM PTI_BUKU WHERE ID='"+idbuku+"'");
+            rs.next();
+            rs = st.executeQuery("SELECT KETERSEDIAAN FROM PTI_BUKU "
+                    + "WHERE ID='"+idbuku+"'");
+            int index = 0;
+            while (rs.next()) {
+                b.setKetersediaan(rs.getInt(1));
+                index++;
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        } finally {
+            try {
+                rs.close();
+                st.close();
+                conn.close();
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        return UpdateKetersediaan2(b.getKetersediaan()+1, idbuku);
+    }
+    public static String UpdateKetersediaan2(int jumlah, String idbuku) {
         String text = null;
         Connection conn = null;
         PreparedStatement ps = null;
@@ -70,19 +100,15 @@ public class Pinjam {
         ResultSet rs = null;
         conn = DatabaseManager.getDBConnection();
         try {
-            conn.createStatement();
-            rs = st.executeQuery("SELECT KETERSEDIAAN PTI_BUKU WHERE ID ='"+idbuku+"'");
-            Buku b = new Buku();
-            b.setKetersediaan(rs.getInt(1)+1);
-            ps = conn.prepareCall("UPDATE PTI_PINJAM SET KETERSEDIAAN = ? WHERE ID ='"+idbuku+"'");
-            ps.setInt(1, b.getKetersediaan());
+            ps = conn.prepareCall("UPDATE PTI_PINJAM SET KETERSEDIAAN='?' WHERE ID ='?'");
+            ps.setInt(1, jumlah);
+            ps.setString(2, idbuku);
+            ps.executeUpdate();
             conn.commit();
         } catch (SQLException ex) {
 
         } finally {
             try {
-                rs.close();
-                st.close();
                 ps.close();
                 conn.close();
             } catch (SQLException ex) {
@@ -99,7 +125,7 @@ public class Pinjam {
         ResultSet rs = null;
         conn = DatabaseManager.getDBConnection();
         try {
-            ps = conn.prepareCall("UPDATE PTI_PINJAM SET TANGGAL_KEMBALI '?' WHERE ID ='?'");
+            ps = conn.prepareCall("UPDATE PTI_PINJAM SET TANGGAL_KEMBALI ='?' WHERE ID ='?'");
             ps.setString(1, kembali);
             ps.setString(2, id);
             ps.executeUpdate();

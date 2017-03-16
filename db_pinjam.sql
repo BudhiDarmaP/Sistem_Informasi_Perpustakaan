@@ -1,5 +1,5 @@
 --------------------------------------------------------
---  File created - Monday-March-13-2017   
+--  File created - Thursday-March-16-2017   
 --------------------------------------------------------
 --------------------------------------------------------
 --  DDL for Table PTI_PINJAM
@@ -7,7 +7,7 @@
 
   CREATE TABLE "SIA"."PTI_PINJAM" 
    (	"ID_PEMINJAM" VARCHAR2(20 BYTE), 
-	"ID_BUKU" NUMBER, 
+	"ID_BUKU" VARCHAR2(14 BYTE), 
 	"TANGGAL_PINJAM" DATE, 
 	"WAKTU_PINJAM" NUMBER, 
 	"TANGGAL_KEMBALI" DATE
@@ -18,7 +18,6 @@
   TABLESPACE "USERS" ;
 REM INSERTING into SIA.PTI_PINJAM
 SET DEFINE OFF;
-Insert into SIA.PTI_PINJAM (ID_PEMINJAM,ID_BUKU,TANGGAL_PINJAM,WAKTU_PINJAM,TANGGAL_KEMBALI) values ('145314042',9780596529260001,to_date('13-MAR-17','DD-MON-RR'),7,to_date('20-MAR-17','DD-MON-RR'));
 --------------------------------------------------------
 --  Constraints for Table PTI_PINJAM
 --------------------------------------------------------
@@ -34,4 +33,21 @@ Insert into SIA.PTI_PINJAM (ID_PEMINJAM,ID_BUKU,TANGGAL_PINJAM,WAKTU_PINJAM,TANG
   ALTER TABLE "SIA"."PTI_PINJAM" ADD CONSTRAINT "PTI_PINJAM_FK1" FOREIGN KEY ("ID_PEMINJAM")
 	  REFERENCES "SIA"."PTI_ANGGOTA" ("ID") ENABLE;
   ALTER TABLE "SIA"."PTI_PINJAM" ADD CONSTRAINT "PTI_PINJAM_FK2" FOREIGN KEY ("ID_BUKU")
-	  REFERENCES "SIA"."PTI_BUKU" ("ID") ENABLE;
+	  REFERENCES "SIA"."PTI_BUKU" ("ISBN") ENABLE;
+--------------------------------------------------------
+--  DDL for Trigger UBAHKETERSEDIAAN
+--------------------------------------------------------
+
+  CREATE OR REPLACE TRIGGER "SIA"."UBAHKETERSEDIAAN" 
+BEFORE INSERT OR UPDATE OF ID_BUKU, TANGGAL_PINJAM, TANGGAL_KEMBALI ON PTI_PINJAM
+FOR EACH ROW
+ WHEN (NEW.TANGGAL_PINJAM IS NOT NULL) BEGIN
+  IF UPDATING('TANGGAL_KEMBALI') THEN UPDATE PTI_BUKU SET
+  KETERSEDIAAN = KETERSEDIAAN+1 WHERE (ID = ID_BUKU.PTI_PINJAM)
+  IF INSERTING('PTI_PINJAM') THEN UPDATE PTI_BUKU SET
+  KETERSEDIAAN = KETERSEDIAAN-1 WHERE (ID = ID_BUKU.PTI_PINJAM)
+  END IF;
+  END IF;
+  END;
+/
+ALTER TRIGGER "SIA"."UBAHKETERSEDIAAN" ENABLE;

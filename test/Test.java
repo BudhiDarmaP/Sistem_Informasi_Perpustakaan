@@ -20,7 +20,5 @@ import java.sql.Statement;
  */
 public class Test {
     public static void main(String[] args) {
-        Pinjam b = new Pinjam();
-        b.UpdateKetersediaan("9781484225820");
     }
 }
