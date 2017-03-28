@@ -7,7 +7,7 @@
 -->
 <html>
     <head>
-        <title>Perpusatkaan Sekarep Dewe</title>
+        <title>Error</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
@@ -22,42 +22,61 @@
 
             <!-- Header -->
             <header id="header">
-                <h1><a href="HalamanUtama.jsp">Sistem Informasi Perpustakaan</a></h1>
-                <nav id="nav">
-                    <ul>
-                        <li class="special">
-                            <a href="#menu" class="menuToggle"><span>Menu</span></a>
-                            <div id="menu">
-                                <ul>
-                                    <li><a href="index.html">Home</a></li>
-                                    <li><a href=".jsp"></a></li>
-                                    <li><a href=".jsp"></a></li>
-                                </ul>
-                            </div>
-                        </li>
-                    </ul>
-                </nav>
+                <div class="logo container">
+                    <div>
+                        <h1><a href="index.jsp" id="logo">Perpustakaan Dewe</a></h1>
+                        <p></p>
+                    </div>
+                </div>
             </header>
 
-            <!-- Main -->
-            <article id="main">
-                <section class="wrapper style5">
-                    <div class="inner">
+            <!-- Nav -->
+            <nav id="nav">
+                <ul>
+                    <li class="current"><a href="index.jsp">Home</a></li>
+                    <li>
+                        <a href="#">Menu</a>
+                        <ul>
+                            <li><a href="#">Login</a></li>
+                            <li><a href="#">Daftar</a></li>
+                            <li><a href="#">Peminjaman</a></li>
+                            <li><a href="#">Pengembalian</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
 
-                        <h2>ERROR!</h2>
-                        <h3><%= request.getAttribute("error")%>!</h3>
-
-                    </div>
+            <!--Banner-->                                            
+            <div id="banner-wrapper">
+                <section id="banner">
+                    <h2>ERROR!</h2>
+                    <h3><%= request.getAttribute("error")%>!</h3>
                 </section>
-            </article>
+            </div>
 
             <!-- Footer -->
-            <footer id="footer">
-                <ul class="copyright">
-                    <li>2017 - PTI</li>
-                </ul>
-            </footer>
+            <footer id="footer" class="container">
+                <div class="row 200%">
+                    <div class="12u">
 
+                        <!-- Contact -->
+                        <section>
+                            <h2 class="major"><span>Kontak</span></h2>
+                            <ul class="contact">
+                                <li><a class="icon fa-facebook" href="#"><span class="label">Facebook</span></a></li>
+                                <li><a class="icon fa-twitter" href="#"><span class="label">Twitter</span></a></li>
+                                <li><a class="icon fa-instagram" href="#"><span class="label">Instagram</span></a></li>
+                            </ul>
+                        </section>
+                    </div>
+                </div>
+                <!-- Copyright -->
+                <div id="copyright">
+                    <ul class="menu">
+                        <li>&copy; Sanata Dharma University. All rights reserved</li><li>Design: <a href="http://budhidarmap.github.io">Team</a></li>
+                    </ul>
+                </div>
+            </footer>
         </div>
 
         <!-- Scripts -->

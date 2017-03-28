@@ -1,15 +1,13 @@
 <%@page import="Model.Buku"%>
+<%@page import="Model.Buku"%>
 <%@page import="Model.Anggota"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-    String key = request.getParameter("key");
-
-    Buku[] bk = Buku.getListPencarian(key);
-    if (bk == null) {
-        RequestDispatcher dispatcher;
-        request.setAttribute("error", "Siswa tidak ditemukan");
-        dispatcher = request.getRequestDispatcher("error.jsp");
-        dispatcher.forward(request, response);
+    int i=0;
+    Buku bk[]=null;
+    while(request.getParameter("data"+String.valueOf(i))!=null){
+        bk[i].getBuku(request.getParameter("data"+String.valueOf(i)));
+        i++;
     }
 %>
 <!DOCTYPE HTML>
@@ -20,7 +18,7 @@
 -->
 <html>
     <head>
-        <title>Search Result</title>
+        <title>Pinjam</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
@@ -56,29 +54,15 @@
                 </ul>
             </nav>
 
-            <!--Banner-->                                            
-            <section id="banner">
-                <h2>Pencarian Buku</h2>
-                <form action="resultSearch" method="get">
-                    <table>
-                        <tr><td><input type="text" name="key" id="email" placeholder="Cari Buku" />
-                        <tr><td><input type="submit" value="Cari"/>
-                    </table>
-                </form>
-            </section>
-
             <!--Main--> 
             <div id="main-wrapper">
                 <div id="main" class="container">
                     <div class="row 200%">
                         <div class="12u">
-                            <h3>Hasil Pencarian:</h3>
-                            <form action="Pinjam.jsp" method="post">
+                            <h3>Daftar akan Dipinjam</h3>
+                            <form action="ControlPeminjaman" method="post">
                                 <table id="customers" >
                                     <tr>
-                                        <td>
-                                            ✓ 
-                                        </td>
                                         <td>
                                             ISBN
                                         </td>
@@ -98,29 +82,25 @@
                                             Ketersediaan
                                         </td>
                                     </tr>
-                                    <%for (int i = 0; i < bk.length; i++) {%>
+                                    <%for (int j = 0; j < i; j++) {%>
                                     <tr>
                                         <td>
-                                            <input type="checkbox" name="data<%=i%>"
-                                            value="<%= bk[i].getISBN()%>" />
+                                            <%= bk[j].getISBN()%>
                                         </td>
                                         <td>
-                                            <%= bk[i].getISBN()%></a>
+                                            <%= bk[j].getJudul()%>
                                         </td>
                                         <td>
-                                            <%= bk[i].getJudul()%>
+                                            <%= bk[j].getPenulis()%>
                                         </td>
                                         <td>
-                                            <%= bk[i].getPenulis()%>
+                                            <%= bk[j].getTahun_Terbit()%>
                                         </td>
                                         <td>
-                                            <%= bk[i].getTahun_Terbit()%>
+                                            <%= bk[j].getPenerbit()%>
                                         </td>
                                         <td>
-                                            <%= bk[i].getPenerbit()%>
-                                        </td>
-                                        <td>
-                                            <%= bk[i].getKetersediaan()%>
+                                            <%= bk[j].getKetersediaan()%>
                                         </td>
                                     </tr>
                                     <%}%>

@@ -133,10 +133,10 @@ public class Buku {
         Statement st = null;
         ResultSet rs = null;
         conn = DatabaseManager.getDBConnection();
-        Buku b= new Buku();
+        Buku b = new Buku();
         try {
             rs = st.executeQuery("SELECT KETERSEDIAAN FROM PTI_BUKU "
-                    + "WHERE ID='"+isbn+"'");
+                    + "WHERE ID='" + isbn + "'");
             int index = 0;
             while (rs.next()) {
                 b.setKetersediaan(rs.getInt(1));
@@ -191,6 +191,47 @@ public class Buku {
                 bk[index].setTahun_Terbit(rs.getString(4));
                 bk[index].setPenerbit(rs.getString(5));
                 bk[index].setKetersediaan(rs.getInt(6));
+                index++;
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        } finally {
+            try {
+                rs.close();
+                st.close();
+                conn.close();
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        return bk;
+    }
+
+    public static Buku getBuku(String ISBN) {
+        Connection conn = null;
+        Statement st = null;
+        ResultSet rs = null;
+        conn = DatabaseManager.getDBConnection();
+        Buku bk = new Buku();
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery("SELECT COUNT (*) TOTAL FROM PTI_BUKU "
+                    + "WHERE ("
+                    + "ISBN='" + ISBN + "' AND "
+                    + "KETERSEDIAAN > 0)");
+            rs.next();
+            rs = st.executeQuery("SELECT * FROM PTI_BUKU "
+                    + "WHERE ("
+                    + "ISBN='" + ISBN + "' AND "
+                    + "KETERSEDIAAN > 0)");
+            int index = 0;
+            while (rs.next()) {
+                bk.setISBN(rs.getString(1));
+                bk.setJudul(rs.getString(2));
+                bk.setPenulis(rs.getString(3));
+                bk.setTahun_Terbit(rs.getString(4));
+                bk.setPenerbit(rs.getString(5));
+                bk.setKetersediaan(rs.getInt(6));
                 index++;
             }
         } catch (SQLException ex) {
