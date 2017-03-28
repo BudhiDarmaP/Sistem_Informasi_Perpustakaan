@@ -62,6 +62,7 @@ public class Pinjam {
     public void setTanggal_kembali(String tanggal_kembali) {
         this.tanggal_kembali = tanggal_kembali;
     }
+    
     public static String UpdateKetersediaan1(String idbuku) {
         Connection conn = null;
         Statement st = null;
@@ -117,7 +118,7 @@ public class Pinjam {
         }
         return text;
     }
-    public static String Pengembalian(String kembali, String id) {
+    public static String Pengembalian(String kembali, String IDbuku, String IDanggota) {
         String text = null;
         Connection conn = null;
         PreparedStatement ps = null;
@@ -125,9 +126,10 @@ public class Pinjam {
         ResultSet rs = null;
         conn = DatabaseManager.getDBConnection();
         try {
-            ps = conn.prepareCall("UPDATE PTI_PINJAM SET TANGGAL_KEMBALI ='?' WHERE ID ='?'");
+            ps = conn.prepareCall("UPDATE PTI_PINJAM SET TANGGAL_KEMBALI='?' WHERE ID_ANGGOTA='?' AND ID_BUKU='?'");
             ps.setString(1, kembali);
-            ps.setString(2, id);
+            ps.setString(2, IDanggota);
+            ps.setString(2, IDbuku);
             ps.executeUpdate();
             conn.commit();
         } catch (SQLException ex) {

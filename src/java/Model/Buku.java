@@ -17,7 +17,7 @@ import java.sql.Statement;
  * @author budhidarmap
  */
 public class Buku {
-    
+
     private String ISBN;
     private String Judul;
     private String Penulis;
@@ -73,6 +73,89 @@ public class Buku {
         this.Ketersediaan = Ketersediaan;
     }
 
+    public static void tambahBuku(Buku b) {
+        String text = null;
+        Connection conn = null;
+        PreparedStatement ps = null;
+        conn = DatabaseManager.getDBConnection();
+        try {
+            ps = conn.prepareCall("INSERT INTO PTI_PINJAM VALUES"
+                    + "(?,?,?,?)");
+            ps.setString(1, b.getISBN());
+            ps.setString(2, b.getJudul());
+            ps.setString(3, b.getPenulis());
+            ps.setString(4, b.getPenerbit());
+            ps.setString(4, b.getTahun_Terbit());
+            ps.executeUpdate();
+            conn.commit();
+            text = "Data sudah ditambahkan";
+
+        } catch (SQLException ex) {
+        } finally {
+            try {
+                ps.close();
+                conn.close();
+            } catch (SQLException ex) {
+            }
+        }
+    }
+
+    public static String UpdateKetersediaan(String isbn, int ketersediaan) {
+        String text = null;
+        Connection conn = null;
+        PreparedStatement ps = null;
+        Statement st = null;
+        ResultSet rs = null;
+        conn = DatabaseManager.getDBConnection();
+        try {
+            ps = conn.prepareCall("UPDATE PTI_PINJAM SET KETERSEDIAAN='?' WHERE ID ='?'");
+            ps.setInt(1, ketersediaan);
+            ps.setString(2, isbn);
+            ps.executeUpdate();
+            conn.commit();
+        } catch (SQLException ex) {
+
+        } finally {
+            try {
+                ps.close();
+                conn.close();
+            } catch (SQLException ex) {
+
+            }
+        }
+        return text;
+    }
+
+    public static Buku cekKetersediaan(String isbn) {
+        String text = null;
+        Connection conn = null;
+        PreparedStatement ps = null;
+        Statement st = null;
+        ResultSet rs = null;
+        conn = DatabaseManager.getDBConnection();
+        Buku b= new Buku();
+        try {
+            rs = st.executeQuery("SELECT KETERSEDIAAN FROM PTI_BUKU "
+                    + "WHERE ID='"+isbn+"'");
+            int index = 0;
+            while (rs.next()) {
+                b.setKetersediaan(rs.getInt(1));
+                index++;
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        } finally {
+            try {
+                rs.close();
+                st.close();
+                conn.close();
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        return b;
+    }
+
     public static Buku[] getListPencarian(String key) {
         Connection conn = null;
         Statement st = null;
@@ -83,21 +166,21 @@ public class Buku {
             st = conn.createStatement();
             rs = st.executeQuery("SELECT COUNT (*) TOTAL FROM PTI_BUKU "
                     + "WHERE ("
-                    + "ISBN LIKE '%"+key+"%' OR  "
-                    + "JUDUL LIKE '%"+key+"%' OR "
-                    + "PENULIS LIKE '%"+key+"%' OR "
-                    + "PENERBIT LIKE '%"+key+"%' OR "
-                    + "TAHUN_TERBIT LIKE '%"+key+"%' AND "
+                    + "ISBN LIKE '%" + key + "%' OR  "
+                    + "JUDUL LIKE '%" + key + "%' OR "
+                    + "PENULIS LIKE '%" + key + "%' OR "
+                    + "PENERBIT LIKE '%" + key + "%' OR "
+                    + "TAHUN_TERBIT LIKE '%" + key + "%' AND "
                     + "KETERSEDIAAN > 0)");
             rs.next();
             bk = new Buku[rs.getInt(1)];
             rs = st.executeQuery("SELECT * FROM PTI_BUKU "
                     + "WHERE ("
-                    + "ISBN LIKE '%"+key+"%' OR  "
-                    + "JUDUL LIKE '%"+key+"%' OR "
-                    + "PENULIS LIKE '%"+key+"%' OR "
-                    + "PENERBIT LIKE '%"+key+"%' OR "
-                    + "TAHUN_TERBIT LIKE '%"+key+"%' AND "
+                    + "ISBN LIKE '%" + key + "%' OR  "
+                    + "JUDUL LIKE '%" + key + "%' OR "
+                    + "PENULIS LIKE '%" + key + "%' OR "
+                    + "PENERBIT LIKE '%" + key + "%' OR "
+                    + "TAHUN_TERBIT LIKE '%" + key + "%' AND "
                     + "KETERSEDIAAN > 0)");
             int index = 0;
             while (rs.next()) {

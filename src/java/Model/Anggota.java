@@ -35,6 +35,29 @@ public class Anggota {
     public void setID_Angota(String ID_Angota) {
         this.ID_Angota = ID_Angota;
     }
+    public static void tambahAnggota(Anggota a) {
+        String text = null;
+        Connection conn = null;
+        PreparedStatement ps = null;
+        conn = DatabaseManager.getDBConnection();
+        try {
+            ps = conn.prepareCall("INSERT INTO PTI_PINJAM VALUES"
+                    + "(?,?)");
+            ps.setString(1, a.getID_Angota());
+            ps.setString(2, a.getNama());
+            ps.executeUpdate();
+            conn.commit();
+            text = "Data sudah ditambahkan";
+
+        } catch (SQLException ex) {
+        } finally {
+            try {
+                ps.close();
+                conn.close();
+            } catch (SQLException ex) {
+            }
+        }
+    }
     public static void simpanPeminjaman(Pinjam p) {
         String text = null;
         Connection conn = null;
