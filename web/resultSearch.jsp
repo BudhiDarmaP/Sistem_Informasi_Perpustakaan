@@ -47,8 +47,8 @@
                     <li>
                         <a href="#">Menu</a>
                         <ul>
-                            <li><a href="#">Login</a></li>
-                            <li><a href="#">Daftar</a></li>
+                            <li><a href="Login.jsp">Login</a></li>
+                            <li><a href="Daftar.jsp">Daftar</a></li>
                             <li><a href="#">Peminjaman</a></li>
                             <li><a href="#">Pengembalian</a></li>
                         </ul>

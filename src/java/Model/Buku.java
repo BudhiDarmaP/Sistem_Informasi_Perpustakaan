@@ -79,16 +79,70 @@ public class Buku {
         PreparedStatement ps = null;
         conn = DatabaseManager.getDBConnection();
         try {
-            ps = conn.prepareCall("INSERT INTO PTI_PINJAM VALUES"
-                    + "(?,?,?,?)");
+            ps = conn.prepareCall("INSERT INTO PTI_BUKU VALUES"
+                    + "(?,?,?,?,?,?)");
             ps.setString(1, b.getISBN());
             ps.setString(2, b.getJudul());
             ps.setString(3, b.getPenulis());
             ps.setString(4, b.getPenerbit());
-            ps.setString(4, b.getTahun_Terbit());
+            ps.setString(5, b.getTahun_Terbit());
+            ps.setInt(6, b.getKetersediaan());
             ps.executeUpdate();
             conn.commit();
             text = "Data sudah ditambahkan";
+
+        } catch (SQLException ex) {
+        } finally {
+            try {
+                ps.close();
+                conn.close();
+            } catch (SQLException ex) {
+            }
+        }
+    }
+
+    public static String editBuku(Buku b) {
+        String text = null;
+        Connection conn = null;
+        PreparedStatement ps = null;
+        Statement st = null;
+        ResultSet rs = null;
+        conn = DatabaseManager.getDBConnection();
+        try {
+            ps = conn.prepareCall("UPDATE PTI_BUKU SET"
+                    + " JUDUL=?, PENULIS=?, TAHUN_TERBIT=?, PENERBIT=?, "
+                    + "KETERSEDIAAN=? WHERE ISBN=?");
+            ps.setString(1, b.getJudul());
+            ps.setString(2, b.getPenulis());
+            ps.setString(3, b.getTahun_Terbit());
+            ps.setString(4, b.getPenerbit());
+            ps.setInt(5, b.getKetersediaan());
+            ps.setString(6, b.getISBN());
+            ps.executeUpdate();
+            conn.commit();
+        } catch (SQLException ex) {
+        } finally {
+            try {
+                ps.close();
+                conn.close();
+            } catch (SQLException ex) {
+
+            }
+        }
+        return text;
+    }
+
+    public static void hapusBuku(String id) {
+        String text = null;
+        Connection conn = null;
+        PreparedStatement ps = null;
+        conn = DatabaseManager.getDBConnection();
+        try {
+            ps = conn.prepareCall("DELETE FROM PTI_BUKU "
+                    + "WHERE ISBN='" + id + "'");
+            ps.executeUpdate();
+            conn.commit();
+            text = "Data sudah dihapus";
 
         } catch (SQLException ex) {
         } finally {

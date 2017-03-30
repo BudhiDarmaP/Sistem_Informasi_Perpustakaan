@@ -11,7 +11,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;  
 
 @Path("/hello")  
-public class Hello {  
+public class NyilihBuku {  
   // This method is called if HTML and XML is not requested  
   @GET  
   @Produces(MediaType.TEXT_PLAIN)  

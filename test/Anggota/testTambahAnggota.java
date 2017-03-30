@@ -1,3 +1,5 @@
+package Anggota;
+
 
 import Control.DatabaseManager;
 import Model.Anggota;
@@ -18,7 +20,15 @@ import java.sql.Statement;
  *
  * @author budhidarmap
  */
-public class Test {
+public class testTambahAnggota {
     public static void main(String[] args) {
+        Anggota a=new Anggota();
+         a.setID_Angota("145314000");
+        a.setNama("nama");
+        a.setEmail("email");
+        a.setNo_tlp("no_tlp");
+        a.setAlamat("alamat");
+        a.setPassword("password");
+        a.tambahAnggota(a);
     }
 }
