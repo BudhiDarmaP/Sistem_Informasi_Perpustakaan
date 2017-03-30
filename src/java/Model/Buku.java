@@ -84,8 +84,8 @@ public class Buku {
             ps.setString(1, b.getISBN());
             ps.setString(2, b.getJudul());
             ps.setString(3, b.getPenulis());
-            ps.setString(4, b.getPenerbit());
-            ps.setString(5, b.getTahun_Terbit());
+            ps.setString(4, b.getTahun_Terbit());
+            ps.setString(5, b.getPenerbit());
             ps.setInt(6, b.getKetersediaan());
             ps.executeUpdate();
             conn.commit();
@@ -162,7 +162,7 @@ public class Buku {
         ResultSet rs = null;
         conn = DatabaseManager.getDBConnection();
         try {
-            ps = conn.prepareCall("UPDATE PTI_PINJAM SET KETERSEDIAAN='?' WHERE ID ='?'");
+            ps = conn.prepareCall("UPDATE PTI_BUKU SET KETERSEDIAAN='?' WHERE ISBN ='?'");
             ps.setInt(1, ketersediaan);
             ps.setString(2, isbn);
             ps.executeUpdate();
@@ -190,7 +190,7 @@ public class Buku {
         Buku b = new Buku();
         try {
             rs = st.executeQuery("SELECT KETERSEDIAAN FROM PTI_BUKU "
-                    + "WHERE ID='" + isbn + "'");
+                    + "WHERE ISBN='" + isbn + "'");
             int index = 0;
             while (rs.next()) {
                 b.setKetersediaan(rs.getInt(1));

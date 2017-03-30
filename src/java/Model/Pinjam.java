@@ -71,10 +71,10 @@ public class Pinjam {
         Buku b = new Buku();
         try {
             st = conn.createStatement();
-            rs = st.executeQuery("SELECT * FROM PTI_BUKU WHERE ID='"+idbuku+"'");
+            rs = st.executeQuery("SELECT * FROM PTI_BUKU WHERE ISBN='"+idbuku+"'");
             rs.next();
             rs = st.executeQuery("SELECT KETERSEDIAAN FROM PTI_BUKU "
-                    + "WHERE ID='"+idbuku+"'");
+                    + "WHERE ISBN='"+idbuku+"'");
             int index = 0;
             while (rs.next()) {
                 b.setKetersediaan(rs.getInt(1));

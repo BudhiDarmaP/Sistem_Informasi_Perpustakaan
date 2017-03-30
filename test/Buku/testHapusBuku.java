@@ -6,11 +6,15 @@
 package Buku;
 
 import Anggota.*;
+import Model.Buku;
 
 /**
  *
  * @author budhidarmap
  */
 public class testHapusBuku {
-    
+    public static void main(String[] args) {
+        Buku b=new Buku();
+        b.hapusBuku("0000000000000");
+    }
 }

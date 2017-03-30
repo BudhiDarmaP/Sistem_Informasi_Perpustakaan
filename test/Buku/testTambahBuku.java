@@ -24,7 +24,7 @@ import java.sql.Statement;
 public class testTambahBuku {
     public static void main(String[] args) {
         Buku b=new Buku();
-        b.setISBN(" 9781476763262");
+        b.setISBN("9781476763262");
         b.setJudul("Dark Territory: The Secret History of Cyber War");
         b.setPenulis("Fred Kaplan");
         b.setTahun_Terbit("2017");
