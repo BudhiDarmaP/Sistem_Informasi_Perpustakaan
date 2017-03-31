@@ -3,12 +3,9 @@
 <%@page import="Model.Anggota"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-    int i=0;
-    Buku bk[]=null;
-    while(request.getParameter("data"+String.valueOf(i))!=null){
-        bk[i].getBuku(request.getParameter("data"+String.valueOf(i)));
-        i++;
-    }
+    Cookie[] cookies = request.getCookies();
+    Cookie cookie;
+    Buku []bk = new Buku[cookies.length];
 %>
 <!DOCTYPE HTML>
 <!--
@@ -82,25 +79,31 @@
                                             Ketersediaan
                                         </td>
                                     </tr>
-                                    <%for (int j = 0; j < i; j++) {%>
+                                    <%
+                                      for (int i = 0; i < cookies.length; i++) {
+                                      cookie=cookies[i];
+                                      bk[i].getListPencarian(cookie.getValue());
+//                                      Cookie saveCookie = new Cookie("ISBN", bk[i].getISBN());
+//                                      response.addCookie(cookie);
+                                    %>
                                     <tr>
                                         <td>
-                                            <%= bk[j].getISBN()%>
+                                            <%= bk[i].getISBN()%>
                                         </td>
                                         <td>
-                                            <%= bk[j].getJudul()%>
+                                            <%= bk[i].getJudul()%>
                                         </td>
                                         <td>
-                                            <%= bk[j].getPenulis()%>
+                                            <%= bk[i].getPenulis()%>
                                         </td>
                                         <td>
-                                            <%= bk[j].getTahun_Terbit()%>
+                                            <%= bk[i].getTahun_Terbit()%>
                                         </td>
                                         <td>
-                                            <%= bk[j].getPenerbit()%>
+                                            <%= bk[i].getPenerbit()%>
                                         </td>
                                         <td>
-                                            <%= bk[j].getKetersediaan()%>
+                                            <%= bk[i].getKetersediaan()%>
                                         </td>
                                     </tr>
                                     <%}%>

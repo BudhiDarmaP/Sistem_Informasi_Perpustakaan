@@ -45,8 +45,8 @@
                     <h2>Login</h2>
                     <form action="ControlLogin" method="post">
                     <table>
-                        <tr><td><input type="text" name="key" id="email" placeholder="ID" />
-                        <tr><td><input type="password" name="key" id="email" placeholder="Password" />
+                        <tr><td><input type="text" name="user[id]" id="id" placeholder="ID" />
+                        <tr><td><input type="password" name="user[pasword]" id="pass" placeholder="Password" />
                         <tr><td><input type="submit" value="Login"/>
                     </table>
                     </form>
@@ -55,21 +55,6 @@
 
             <!-- Footer -->
             <footer id="footer" class="container">
-                <div class="row 200%">
-                    <div class="12u">
-
-                        <!-- About -->
-                        <section>
-                            <h2 class="major"><span>What's this about?</span></h2>
-                            <p>
-                                <strong>Blank</strong>
-                            </p>
-                        </section>
-
-                    </div>
-                </div>
-                <div class="row 200%">
-                    <div class="12u">
 
                         <!-- Contact -->
                         <section>
@@ -80,8 +65,6 @@
                                 <li><a class="icon fa-instagram" href="#"><span class="label">Instagram</span></a></li>
                             </ul>
                         </section>
-                    </div>
-                </div>
 
                 <!-- Copyright -->
                 <div id="copyright">

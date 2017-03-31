@@ -58,7 +58,6 @@
 
             <!--Banner-->                                            
             <section id="banner">
-                <h2>Pencarian Buku</h2>
                 <form action="resultSearch" method="get">
                     <table>
                         <tr><td><input type="text" name="key" id="email" placeholder="Cari Buku" />
@@ -73,7 +72,7 @@
                     <div class="row 200%">
                         <div class="12u">
                             <h3>Hasil Pencarian:</h3>
-                            <form action="Pinjam.jsp" method="post">
+                            <form action="" method="post">
                                 <table id="customers" >
                                     <tr>
                                         <td>
@@ -102,7 +101,9 @@
                                     <tr>
                                         <td>
                                             <input type="checkbox" name="data<%=i%>"
-                                            value="<%= bk[i].getISBN()%>" />
+                                                   value="<%= bk[i].getISBN()%>" 
+                                                   <%Cookie cookie = new Cookie("ISBN", bk[i].getISBN());
+                                                   response.addCookie(cookie);%> />
                                         </td>
                                         <td>
                                             <%= bk[i].getISBN()%></a>

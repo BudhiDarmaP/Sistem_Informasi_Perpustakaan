@@ -73,6 +73,37 @@ public class Anggota {
         this.password = password;
     }
 
+    public static Anggota LoginAnggota(String id, String pass) {
+        Connection conn = null;
+        Statement st = null;
+        ResultSet rs = null;
+        conn = DatabaseManager.getDBConnection();
+        Anggota a = new Anggota();
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery("SELECT * FROM PTI_ANGGOTA WHERE "
+                    + "ID='" + id + "' AND PASSWORD='" + pass + "'");
+            rs.next();
+            a.setID_Angota(rs.getString(1));
+            a.setNama(rs.getString(2));
+            a.setEmail(rs.getString(3));
+            a.setNo_tlp(rs.getString(4));
+            a.setAlamat(rs.getString(5));
+            a.setPassword(rs.getString(6));
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        } finally {
+            try {
+                rs.close();
+                st.close();
+                conn.close();
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        return a;
+    }
+
     public static int panggilID(String tgl) {
         Connection conn = null;
         Statement st = null;
@@ -121,7 +152,6 @@ public class Anggota {
             ps.executeUpdate();
             conn.commit();
             text = "Data sudah ditambahkan";
-
         } catch (SQLException ex) {
         } finally {
             try {
