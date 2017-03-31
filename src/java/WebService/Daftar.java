@@ -24,7 +24,7 @@ public class Daftar{
      */
     @POST
     @WebMethod(operationName = "daftarMember")
-    public String daftarMember(@WebParam(name = "Nama") String Nama, 
+    public Anggota daftarMember(@WebParam(name = "Nama") String Nama, 
             @WebParam(name = "Email") String Email, 
             @WebParam(name = "No_Tlp") String No_Tlp,
             @WebParam(name = "Alamat") String Alamat,
@@ -48,6 +48,6 @@ public class Daftar{
         a.setAlamat(Alamat);
         a.setPassword(Password);
         a.tambahAnggota(a);
-        return null;
+        return a;
     }
 }   
