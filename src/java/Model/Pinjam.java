@@ -17,11 +17,13 @@ import java.sql.Statement;
  * @author budhidarmap
  */
 public class Pinjam {
+
     private String ID_Peminjam;
     private String ID_Buku;
     private String tanggal_pinjam;
     private int waktu_pinjam;
     private String tanggal_kembali;
+    private boolean status;
 
     public String getID_Peminjam() {
         return ID_Peminjam;
@@ -62,7 +64,15 @@ public class Pinjam {
     public void setTanggal_kembali(String tanggal_kembali) {
         this.tanggal_kembali = tanggal_kembali;
     }
-    
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
     public static String UpdateKetersediaan1(String idbuku) {
         Connection conn = null;
         Statement st = null;
@@ -71,10 +81,10 @@ public class Pinjam {
         Buku b = new Buku();
         try {
             st = conn.createStatement();
-            rs = st.executeQuery("SELECT * FROM PTI_BUKU WHERE ISBN='"+idbuku+"'");
+            rs = st.executeQuery("SELECT * FROM PTI_BUKU WHERE ISBN='" + idbuku + "'");
             rs.next();
             rs = st.executeQuery("SELECT KETERSEDIAAN FROM PTI_BUKU "
-                    + "WHERE ISBN='"+idbuku+"'");
+                    + "WHERE ISBN='" + idbuku + "'");
             int index = 0;
             while (rs.next()) {
                 b.setKetersediaan(rs.getInt(1));
@@ -91,8 +101,9 @@ public class Pinjam {
                 System.out.println(ex.getMessage());
             }
         }
-        return UpdateKetersediaan2(b.getKetersediaan()+1, idbuku);
+        return UpdateKetersediaan2(b.getKetersediaan() + 1, idbuku);
     }
+
     public static String UpdateKetersediaan2(int jumlah, String idbuku) {
         String text = null;
         Connection conn = null;
@@ -118,6 +129,7 @@ public class Pinjam {
         }
         return text;
     }
+
     public static String Pengembalian(String kembali, String IDbuku, String IDanggota) {
         String text = null;
         Connection conn = null;
@@ -126,10 +138,12 @@ public class Pinjam {
         ResultSet rs = null;
         conn = DatabaseManager.getDBConnection();
         try {
-            ps = conn.prepareCall("UPDATE PTI_PINJAM SET TANGGAL_KEMBALI='?' WHERE ID_ANGGOTA='?' AND ID_BUKU='?'");
+            ps = conn.prepareCall("UPDATE PTI_PINJAM SET TANGGAL_KEMBALI=TO_DATE(?, 'DD-MM-YYYY'), "
+                    + "STATUS='Y' "
+                    + "WHERE ID_PEMINJAM=? AND ID_BUKU=?");
             ps.setString(1, kembali);
             ps.setString(2, IDanggota);
-            ps.setString(2, IDbuku);
+            ps.setString(3, IDbuku);
             ps.executeUpdate();
             conn.commit();
         } catch (SQLException ex) {

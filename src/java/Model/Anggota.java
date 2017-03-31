@@ -193,7 +193,7 @@ public class Anggota {
         conn = DatabaseManager.getDBConnection();
         try {
             ps = conn.prepareCall("INSERT INTO PTI_PINJAM "
-                    + "VALUES(?, ?, TO_DATE(?, 'DD-MM-YYYY'),? ,NULL)");
+                    + "VALUES(?, ?, TO_DATE(?, 'DD-MM-YYYY'),?,NULL,'N')");
             ps.setString(1, p.getID_Peminjam());
             ps.setString(2, p.getID_Buku());
             ps.setString(3, p.getTanggal_pinjam());
@@ -225,7 +225,7 @@ public class Anggota {
             rs.next();
             pin = new Pinjam[rs.getInt(1)];
             rs = st.executeQuery("SELECT * FROM PTI_PINJAM WHERE "
-                    + "(ID_PEMINJAM=" + id + " AND TANGGAL_KEMBALI=NULL)");
+                    + "(ID_PEMINJAM=" + id + " AND STATUS='N')");
             int index = 0;
             while (rs.next()) {
                 pin[index] = new Pinjam();
@@ -234,6 +234,7 @@ public class Anggota {
                 pin[index].setTanggal_pinjam(rs.getString(3));
                 pin[index].setWaktu_pinjam(rs.getInt(4));
                 pin[index].setTanggal_kembali(rs.getString(5));
+                pin[index].setTanggal_kembali(rs.getString(6));
                 index++;
             }
         } catch (SQLException ex) {
