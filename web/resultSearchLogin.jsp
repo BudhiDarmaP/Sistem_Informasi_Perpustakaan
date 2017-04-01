@@ -1,11 +1,16 @@
 <%@page import="Model.Buku"%>
-<%@page import="Model.Buku"%>
 <%@page import="Model.Anggota"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-    Cookie[] cookies = request.getCookies();
-    Cookie cookie;
-    Buku []bk = new Buku[cookies.length];
+    String key = request.getParameter("key");
+
+    Buku[] bk = Buku.getListPencarian(key);
+    if (bk == null) {
+        RequestDispatcher dispatcher;
+        request.setAttribute("error", "Siswa tidak ditemukan");
+        dispatcher = request.getRequestDispatcher("error.jsp");
+        dispatcher.forward(request, response);
+    }
 %>
 <!DOCTYPE HTML>
 <!--
@@ -15,7 +20,7 @@
 -->
 <html>
     <head>
-        <title>Pinjam</title>
+        <title>Search Result</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
@@ -42,6 +47,7 @@
                     <li>
                         <a href="#">Menu</a>
                         <ul>
+                            <li><a href="Peminjaman.jsp">Peminjaman</a></li>
                             <li><a href="Pengembalian.jsp">Pengembalian</a></li>
                             <li><a href="Logout.jsp">Logout</a></li>
                         </ul>
@@ -49,15 +55,28 @@
                 </ul>
             </nav>
 
+            <!--Banner-->                                            
+            <section id="banner">
+                <form action="resultSearchLogin" method="get">
+                    <table>
+                        <tr><td><input type="text" name="key" id="email" placeholder="Cari Buku" />
+                        <tr><td><input type="submit" value="Cari"/>
+                    </table>
+                </form>
+            </section>
+
             <!--Main--> 
             <div id="main-wrapper">
                 <div id="main" class="container">
                     <div class="row 200%">
                         <div class="12u">
-                            <h3>Daftar akan Dipinjam</h3>
+                            <h3>Hasil Pencarian:</h3>
                             <form action="ControlPeminjaman" method="post">
                                 <table id="customers" >
                                     <tr>
+                                        <td>
+                                            ✓ 
+                                        </td>
                                         <td>
                                             ISBN
                                         </td>
@@ -77,16 +96,16 @@
                                             Ketersediaan
                                         </td>
                                     </tr>
-                                    <%
-                                      for (int i = 0; i < cookies.length; i++) {
-                                      cookie=cookies[i];
-                                      bk[i].getListPencarian(cookie.getValue());
-//                                      Cookie saveCookie = new Cookie("ISBN", bk[i].getISBN());
-//                                      response.addCookie(cookie);
-                                    %>
+                                    <%for (int i = 0; i < bk.length; i++) {%>
                                     <tr>
                                         <td>
-                                            <%= bk[i].getISBN()%>
+                                            <input type="checkbox" name="data<%=i%>"
+                                                   value="<%= bk[i].getISBN()%>" 
+                                                   <%Cookie cookie = new Cookie("ISBN", bk[i].getISBN());
+                                                       response.addCookie(cookie);%> />
+                                        </td>
+                                        <td>
+                                            <%= bk[i].getISBN()%></a>
                                         </td>
                                         <td>
                                             <%= bk[i].getJudul()%>

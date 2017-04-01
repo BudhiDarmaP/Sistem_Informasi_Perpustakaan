@@ -5,6 +5,7 @@
  */
 package Control;
 
+import Model.Anggota;
 import Model.Buku;
 import Model.Pinjam;
 import java.io.IOException;
@@ -14,6 +15,7 @@ import java.util.Calendar;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,42 +35,44 @@ public class ControlPeminjaman extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             String timeStamp = new SimpleDateFormat("yyMMdd").format(Calendar.getInstance().getTime());
+            Pinjam p = new Pinjam();
+            Anggota a = new Anggota();
             int i = 0;
-            String ID=null;//cookies
+            Cookie cookie = null;
+            Cookie[] cookies = null;
+            cookies = request.getCookies();
+            if (cookies != null) {
+                for (Cookie cookie1 : cookies) {
+                    cookie = cookie1;
+                    if ("id".equals(cookie.getName())) {
+                        a.panggilAnggota(cookie.getValue());
+                        p.setID_Peminjam(a.getID_Angota());
+                    }
+                }
+            }
             Buku bk[] = null;
-                System.out.println("a");
             while (request.getParameter("data" + String.valueOf(i)) != null) {
                 bk[i].getBuku(request.getParameter("data" + String.valueOf(i)));
-                System.out.println("a");
                 i++;
             }
-            Pinjam p = new Pinjam();
-//            out.print("<html>");
-//            out.print("<head>");
-//            out.print("<body>");
             for (int j = 0; j < i; j++) {
-                p.setID_Peminjam(ID);
                 p.setID_Buku(bk[j].getISBN());
                 p.setTanggal_pinjam(timeStamp);
                 p.setTanggal_kembali(null);
                 p.setWaktu_pinjam(7);
+                a.simpanPeminjaman(p);
+                bk[i].cekKetersediaan(p.getID_Buku());
+                bk[i].UpdateKetersediaan(p.getID_Buku(), (bk[i].getKetersediaan()-1));
             }
-        
-            
-//            out.print("</html>");
-//            out.print("</head>");
-//            out.print("</body>");
-               this.tampil(request, response, "Data Peminjaman Tersimpan");
+            this.tampil(request, response, "Data Peminjaman Tersimpan");
         }
     }
 
@@ -76,6 +80,7 @@ public class ControlPeminjaman extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
     public void tampil(HttpServletRequest request, HttpServletResponse response, String information) throws ServletException, IOException {
         RequestDispatcher dispatcher;
         request.setAttribute("info", information);

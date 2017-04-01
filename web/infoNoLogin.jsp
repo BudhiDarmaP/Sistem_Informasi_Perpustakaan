@@ -1,17 +1,23 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="Model.Buku"%>
-<!DOCTYPE html>
-
+<!DOCTYPE HTML>
+<!--
+        Spectral by HTML5 UP
+        html5up.net | @ajlkn
+        Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
 <html>
     <head>
-        <title>Login</title>
+        <title>Informasi</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
         <link rel="stylesheet" href="assets/css/main.css" />
         <!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+        <!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
     </head>
-    <body class="homepage">
+    <body>
+
+        <!-- Page Wrapper -->
         <div id="page-wrapper">
 
             <!-- Header -->
@@ -31,9 +37,8 @@
                     <li>
                         <a href="#">Menu</a>
                         <ul>
+                            <li><a href="Login.jsp">Login</a></li>
                             <li><a href="Daftar.jsp">Daftar</a></li>
-                            <li><a href="#">Peminjaman</a></li>
-                            <li><a href="#">Pengembalian</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -42,19 +47,15 @@
             <!--Banner-->                                            
             <div id="banner-wrapper">
                 <section id="banner">
-                    <h2>Login</h2>
-                    <form action="ControlLogin" method="post">
-                    <table>
-                        <tr><td><input type="text" name="user[id]" id="id" placeholder="ID" />
-                        <tr><td><input type="password" name="user[pasword]" id="pass" placeholder="Password" />
-                        <tr><td><input type="submit" value="Login"/>
-                    </table>
-                    </form>
+                    <h2>Informasi: </h2>
+                    <h3><%= request.getAttribute("info")%>!</h3>
                 </section>
             </div>
 
             <!-- Footer -->
             <footer id="footer" class="container">
+                <div class="row 200%">
+                    <div class="12u">
 
                         <!-- Contact -->
                         <section>
@@ -65,7 +66,8 @@
                                 <li><a class="icon fa-instagram" href="#"><span class="label">Instagram</span></a></li>
                             </ul>
                         </section>
-
+                    </div>
+                </div>
                 <!-- Copyright -->
                 <div id="copyright">
                     <ul class="menu">
@@ -77,9 +79,9 @@
 
         <!-- Scripts -->
         <script src="assets/js/jquery.min.js"></script>
-        <script src="assets/js/jquery.dropotron.min.js"></script>
+        <script src="assets/js/jquery.scrollex.min.js"></script>
+        <script src="assets/js/jquery.scrolly.min.js"></script>
         <script src="assets/js/skel.min.js"></script>
-        <script src="assets/js/skel-viewport.min.js"></script>
         <script src="assets/js/util.js"></script>
         <!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
         <script src="assets/js/main.js"></script>

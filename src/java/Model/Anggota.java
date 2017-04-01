@@ -119,7 +119,6 @@ public class Anggota {
                     + "(ID LIKE '%" + tgl + "%')");
             while (rs.next()) {
                 index++;
-                System.out.println(index);
             }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -133,6 +132,32 @@ public class Anggota {
             }
         }
         return index;
+    }
+
+    public static Anggota panggilAnggota(String id) {
+        Connection conn = null;
+        Statement st = null;
+        ResultSet rs = null;
+        conn = DatabaseManager.getDBConnection();
+        Anggota a = new Anggota();
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery("SELECT NAMA FROM PTI_ANGGOTA WHERE"
+                    + "(ID=" + id + ")");
+            rs.next();
+            a.setNama(rs.getString(1));
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        } finally {
+            try {
+                rs.close();
+                st.close();
+                conn.close();
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        return a;
     }
 
     public static void tambahAnggota(Anggota a) {

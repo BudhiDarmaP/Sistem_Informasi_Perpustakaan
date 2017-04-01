@@ -34,7 +34,7 @@
             <header id="header">
                 <div class="logo container">
                     <div>
-                        <h1><a href="index.jsp" id="logo">Perpustakaan Dewe</a></h1>
+                        <h1><a href="indexLogin.jsp" id="logo">Perpustakaan Dewe</a></h1>
                         <p></p>
                     </div>
                 </div>
@@ -43,14 +43,12 @@
             <!-- Nav -->
             <nav id="nav">
                 <ul>
-                    <li class="current"><a href="index.jsp">Home</a></li>
+                    <li class="current"><a href="indexLogin.jsp">Home</a></li>
                     <li>
                         <a href="#">Menu</a>
                         <ul>
-                            <li><a href="#">Login</a></li>
-                            <li><a href="#">Daftar</a></li>
-                            <li><a href="#">Peminjaman</a></li>
-                            <li><a href="#">Pengembalian</a></li>
+                            <li><a href="Pengembalian.jsp">Pengembalian</a></li>
+                            <li><a href="Logout.jsp">Logout</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -59,7 +57,7 @@
             <!--Banner-->                                            
             <section id="banner">
                 <h2>Pencarian Buku</h2>
-                <form action="resultSearch" method="get">
+                <form action="resultSearchLogin.jsp" method="get">
                     <table>
                         <tr><td><input type="text" name="key" id="email" placeholder="Cari Buku" />
                         <tr><td><input type="submit" value="Cari"/>

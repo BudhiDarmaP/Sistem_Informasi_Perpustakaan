@@ -4,7 +4,7 @@
 
 <html>
     <head>
-        <title>Home Perpustakaan Dewe</title>
+        <title>Pendaftaran</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
@@ -32,8 +32,6 @@
                         <a href="#">Menu</a>
                         <ul>
                             <li><a href="Login.jsp">Login</a></li>
-                            <li><a href="#">Peminjaman</a></li>
-                            <li><a href="#">Pengembalian</a></li>
                         </ul>
                     </li>
                 </ul>

@@ -49,8 +49,6 @@
                         <ul>
                             <li><a href="Login.jsp">Login</a></li>
                             <li><a href="Daftar.jsp">Daftar</a></li>
-                            <li><a href="#">Peminjaman</a></li>
-                            <li><a href="#">Pengembalian</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -72,62 +70,53 @@
                     <div class="row 200%">
                         <div class="12u">
                             <h3>Hasil Pencarian:</h3>
-                            <form action="" method="post">
-                                <table id="customers" >
-                                    <tr>
-                                        <td>
-                                            ✓ 
-                                        </td>
-                                        <td>
-                                            ISBN
-                                        </td>
-                                        <td>
-                                            Judul
-                                        </td>
-                                        <td>
-                                            Penulis
-                                        </td>
-                                        <td>
-                                            Tahun Terbit
-                                        </td>
-                                        <td>
-                                            Penerbit
-                                        </td>
-                                        <td>
-                                            Ketersediaan
-                                        </td>
-                                    </tr>
-                                    <%for (int i = 0; i < bk.length; i++) {%>
-                                    <tr>
-                                        <td>
-                                            <input type="checkbox" name="data<%=i%>"
-                                                   value="<%= bk[i].getISBN()%>" 
-                                                   <%Cookie cookie = new Cookie("ISBN", bk[i].getISBN());
-                                                   response.addCookie(cookie);%> />
-                                        </td>
-                                        <td>
-                                            <%= bk[i].getISBN()%></a>
-                                        </td>
-                                        <td>
-                                            <%= bk[i].getJudul()%>
-                                        </td>
-                                        <td>
-                                            <%= bk[i].getPenulis()%>
-                                        </td>
-                                        <td>
-                                            <%= bk[i].getTahun_Terbit()%>
-                                        </td>
-                                        <td>
-                                            <%= bk[i].getPenerbit()%>
-                                        </td>
-                                        <td>
-                                            <%= bk[i].getKetersediaan()%>
-                                        </td>
-                                    </tr>
-                                    <%}%>
-                                </table>
-                                <input type="submit" value="Pinjam" />
-                            </form>
+                            <table id="customers" >
+                                <tr>
+                                    <td>
+                                        ✓ 
+                                    </td>
+                                    <td>
+                                        ISBN
+                                    </td>
+                                    <td>
+                                        Judul
+                                    </td>
+                                    <td>
+                                        Penulis
+                                    </td>
+                                    <td>
+                                        Tahun Terbit
+                                    </td>
+                                    <td>
+                                        Penerbit
+                                    </td>
+                                    <td>
+                                        Ketersediaan
+                                    </td>
+                                </tr>
+                                <%for (int i = 0; i < bk.length; i++) {%>
+                                <tr>
+                                    <td>
+                                        <%= bk[i].getISBN()%></a>
+                                    </td>
+                                    <td>
+                                        <%= bk[i].getJudul()%>
+                                    </td>
+                                    <td>
+                                        <%= bk[i].getPenulis()%>
+                                    </td>
+                                    <td>
+                                        <%= bk[i].getTahun_Terbit()%>
+                                    </td>
+                                    <td>
+                                        <%= bk[i].getPenerbit()%>
+                                    </td>
+                                    <td>
+                                        <%= bk[i].getKetersediaan()%>
+                                    </td>
+                                </tr>
+                                <%}%>
+                            </table>
                         </div>
                     </div>
                 </div>

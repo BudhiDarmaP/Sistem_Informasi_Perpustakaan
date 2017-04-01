@@ -39,7 +39,7 @@ public class ControlLogin extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
         Anggota a = null;
-//        try {
+        try {
 //            if (request.getParameter("user[id]").equals("")) {
 //                throw new Exception("ID user salah");
 //            }
@@ -54,20 +54,16 @@ public class ControlLogin extends HttpServlet {
 //            e.printStackTrace();
 //        } catch (IOException e) {
 //            e.printStackTrace();
-//        } catch (Exception ex) {
-//            this.returnError(request, response, ex);
-//        }
         String id = request.getParameter("user[id]");
         String pass = request.getParameter("user[password]");
         a = Anggota.LoginAnggota(id, pass);
         String nama=a.getNama();
-        Cookie NAMA = new Cookie("nama", nama);
-        Cookie ID = new Cookie("id", id);
-        Cookie PASS = new Cookie("pass", pass);
-        response.addCookie(NAMA);
+        Cookie ID = new Cookie("id", id);;
         response.addCookie(ID);
-        response.addCookie(PASS);
         this.tampil(request, response, "Selamat Datang, ");
+        } catch (Exception ex) {
+            this.returnError(request, response, ex);
+        }
     }
 
     @Override

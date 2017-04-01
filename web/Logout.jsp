@@ -4,7 +4,7 @@
 
 <html>
     <head>
-        <title>Login</title>
+        <title>Logout</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
@@ -18,7 +18,7 @@
             <header id="header">
                 <div class="logo container">
                     <div>
-                        <h1><a href="index.jsp" id="logo">Perpustakaan Dewe</a></h1>
+                        <h1><a href="indexLogin.jsp" id="logo">Perpustakaan Dewe</a></h1>
                         <p></p>
                     </div>
                 </div>
@@ -27,13 +27,12 @@
             <!-- Nav -->
             <nav id="nav">
                 <ul>
-                    <li class="current"><a href="index.jsp">Home</a></li>
+                    <li class="current"><a href="indexLogin.jsp">Home</a></li>
                     <li>
                         <a href="#">Menu</a>
                         <ul>
-                            <li><a href="Daftar.jsp">Daftar</a></li>
-                            <li><a href="#">Peminjaman</a></li>
-                            <li><a href="#">Pengembalian</a></li>
+                            <li><a href="Peminjaman.jsp">Peminjaman</a></li>
+                            <li><a href="Pengembalian.jsp">Pengembalian</a></li>
                         </ul>
                     </li>
                 </ul>
