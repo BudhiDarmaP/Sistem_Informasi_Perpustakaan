@@ -145,11 +145,13 @@ public class Buku {
             text = "Data sudah dihapus";
 
         } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
         } finally {
             try {
                 ps.close();
                 conn.close();
             } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
             }
         }
     }
@@ -162,40 +164,43 @@ public class Buku {
         ResultSet rs = null;
         conn = DatabaseManager.getDBConnection();
         try {
-            ps = conn.prepareCall("UPDATE PTI_BUKU SET KETERSEDIAAN='?' WHERE ISBN ='?'");
+            if(ketersediaan>=0){
+            ps = conn.prepareCall("UPDATE PTI_BUKU SET KETERSEDIAAN=? WHERE ISBN=?");
             ps.setInt(1, ketersediaan);
             ps.setString(2, isbn);
             ps.executeUpdate();
-            conn.commit();
+            conn.commit();}
+            else {
+                return text;
+            }
         } catch (SQLException ex) {
-
+            System.out.println(ex.getMessage());
         } finally {
             try {
                 ps.close();
                 conn.close();
             } catch (SQLException ex) {
-
+                System.out.println(ex.getMessage());
             }
         }
         return text;
     }
 
-    public static Buku cekKetersediaan(String isbn) {
-        String text = null;
+    public static int cekKetersediaan(String isbn) {
         Connection conn = null;
         PreparedStatement ps = null;
         Statement st = null;
         ResultSet rs = null;
         conn = DatabaseManager.getDBConnection();
         Buku b = new Buku();
+        int sedia = 0;
         try {
+            st = conn.createStatement();
             rs = st.executeQuery("SELECT KETERSEDIAAN FROM PTI_BUKU "
                     + "WHERE ISBN='" + isbn + "'");
-            int index = 0;
-            while (rs.next()) {
-                b.setKetersediaan(rs.getInt(1));
-                index++;
-            }
+            rs.next();
+            b.setKetersediaan(rs.getInt(1));
+            sedia = rs.getInt(1);
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         } finally {
@@ -207,7 +212,7 @@ public class Buku {
                 System.out.println(ex.getMessage());
             }
         }
-        return b;
+        return sedia;
     }
 
     public static Buku[] getListPencarian(String key) {
@@ -300,5 +305,40 @@ public class Buku {
             }
         }
         return bk;
+    }
+
+    public static boolean cekBuku(String key) {
+        Connection conn = null;
+        Statement st = null;
+        ResultSet rs = null;
+        conn = DatabaseManager.getDBConnection();
+        Anggota a = new Anggota();
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery("SELECT COUNT (*) TOTAL FROM PTI_BUKU "
+                    + "WHERE ("
+                    + "ISBN LIKE '%" + key + "%' OR  "
+                    + "JUDUL LIKE '%" + key + "%' OR "
+                    + "PENULIS LIKE '%" + key + "%' OR "
+                    + "PENERBIT LIKE '%" + key + "%' OR "
+                    + "TAHUN_TERBIT LIKE '%" + key + "%' AND "
+                    + "KETERSEDIAAN > 0)");
+            rs.next();
+            int nilai = Integer.parseInt(rs.getString(1));
+            if (nilai == 0) {
+                return false;
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        } finally {
+            try {
+                rs.close();
+                st.close();
+                conn.close();
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        return true;
     }
 }

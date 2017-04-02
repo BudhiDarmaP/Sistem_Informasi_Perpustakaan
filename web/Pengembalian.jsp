@@ -1,17 +1,7 @@
+<%@page import="Model.Pinjam"%>
 <%@page import="Model.Buku"%>
 <%@page import="Model.Anggota"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%
-    String key = request.getParameter("key");
-
-    Buku[] bk = Buku.getListPencarian(key);
-    if (bk == null) {
-        RequestDispatcher dispatcher;
-        request.setAttribute("error", "Siswa tidak ditemukan");
-        dispatcher = request.getRequestDispatcher("error.jsp");
-        dispatcher.forward(request, response);
-    }
-%>
 <!DOCTYPE HTML>
 <!--
         Dimension by HTML5 UP
@@ -19,6 +9,31 @@
         Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
 <html>
+    <%  String id = null;
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (int i = 0; i < cookies.length; i++) {
+                Cookie c = cookies[i];
+                //cek nilai
+                if (c.getName().equals("id")) {
+                    id = c.getValue();
+                }
+            }
+        } else {
+            RequestDispatcher dispatcher;
+            request.setAttribute("error", "Peminjaman Gagal");
+            dispatcher = request.getRequestDispatcher("error.jsp");
+            dispatcher.forward(request, response);
+        }
+        if (Pinjam.getListPinjaman(id) == null) {
+            RequestDispatcher dispatcher;
+            request.setAttribute("info", "Tidak Ada Peminjaman Saat Ini");
+            dispatcher = request.getRequestDispatcher("info.jsp");
+            dispatcher.forward(request, response);
+        }
+        Pinjam[] p = Pinjam.getListPinjaman(id);
+        Pinjam list = new Pinjam();
+    %>
     <head>
         <title>Pengembalian</title>
         <meta charset="utf-8" />
@@ -56,8 +71,7 @@
 
             <!--Banner-->                                            
             <section id="banner">
-                <h2>Pencarian Buku</h2>
-                <form action="resultSearchLogin.jsp" method="get">
+                <form action="resultSearchLogin" method="get">
                     <table>
                         <tr><td><input type="text" name="key" id="email" placeholder="Cari Buku" />
                         <tr><td><input type="submit" value="Cari"/>
@@ -70,60 +84,37 @@
                 <div id="main" class="container">
                     <div class="row 200%">
                         <div class="12u">
-                            <h3>Hasil Pencarian:</h3>
-                            <form action="Pinjam.jsp" method="post">
+                            <h3>Daftar Peminjaman:</h3>
+                            <form action="ControlPengembalian" method="post">
                                 <table id="customers" >
                                     <tr>
                                         <td>
-                                            ✓ 
+                                            ID Buku
                                         </td>
                                         <td>
-                                            ISBN
+                                            Waktu Pinjam
                                         </td>
                                         <td>
-                                            Judul
-                                        </td>
-                                        <td>
-                                            Penulis
-                                        </td>
-                                        <td>
-                                            Tahun Terbit
-                                        </td>
-                                        <td>
-                                            Penerbit
-                                        </td>
-                                        <td>
-                                            Ketersediaan
+                                            Tanggal Pinjam
                                         </td>
                                     </tr>
-                                    <%for (int i = 0; i < bk.length; i++) {%>
+                                    <%for (int i = 0; i < list.cekPeminjaman(id); i++) {%>
                                     <tr>
                                         <td>
-                                            <input type="checkbox" name="data<%=i%>"
-                                            value="<%= bk[i].getISBN()%>" />
+                                            <input type="submit"
+                                                   name="isbn"
+                                                   value="<%=p[i].getID_Buku()%>" 
+                                                   height="0.75em" >
                                         </td>
                                         <td>
-                                            <%= bk[i].getISBN()%></a>
+                                            <%= p[i].getWaktu_pinjam()%> Hari
                                         </td>
                                         <td>
-                                            <%= bk[i].getJudul()%>
-                                        </td>
-                                        <td>
-                                            <%= bk[i].getPenulis()%>
-                                        </td>
-                                        <td>
-                                            <%= bk[i].getTahun_Terbit()%>
-                                        </td>
-                                        <td>
-                                            <%= bk[i].getPenerbit()%>
-                                        </td>
-                                        <td>
-                                            <%= bk[i].getKetersediaan()%>
+                                            <%= p[i].getTanggal_pinjam()%>
                                         </td>
                                     </tr>
                                     <%}%>
                                 </table>
-                                <input type="submit" value="Pinjam" />
                             </form>
                         </div>
                     </div>

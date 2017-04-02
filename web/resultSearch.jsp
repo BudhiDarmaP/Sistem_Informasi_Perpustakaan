@@ -2,15 +2,16 @@
 <%@page import="Model.Anggota"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-    String key = request.getParameter("key");
-
-    Buku[] bk = Buku.getListPencarian(key);
-    if (bk == null) {
+    String key=request.getParameter("key");
+    
+        Buku b = new Buku();
+    if (b.cekBuku(key)==false||key=="") {
         RequestDispatcher dispatcher;
-        request.setAttribute("error", "Siswa tidak ditemukan");
-        dispatcher = request.getRequestDispatcher("error.jsp");
+        request.setAttribute("error", "Buku tidak ditemukan");
+        dispatcher = request.getRequestDispatcher("errorNo_Login.jsp");
         dispatcher.forward(request, response);
     }
+    Buku []bk=Buku.getListPencarian(key);
 %>
 <!DOCTYPE HTML>
 <!--
@@ -56,7 +57,7 @@
 
             <!--Banner-->                                            
             <section id="banner">
-                <form action="resultSearch" method="get">
+                <form action="resultSearch.jsp" method="get">
                     <table>
                         <tr><td><input type="text" name="key" id="email" placeholder="Cari Buku" />
                         <tr><td><input type="submit" value="Cari"/>
@@ -72,9 +73,6 @@
                             <h3>Hasil Pencarian:</h3>
                             <table id="customers" >
                                 <tr>
-                                    <td>
-                                        ✓ 
-                                    </td>
                                     <td>
                                         ISBN
                                     </td>

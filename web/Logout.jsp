@@ -3,6 +3,9 @@
 <!DOCTYPE html>
 
 <html>
+    <%  String information = String.valueOf(request.getAttribute("info"));
+        request.setAttribute("info", information);
+    %>
     <head>
         <title>Logout</title>
         <meta charset="utf-8" />
@@ -15,14 +18,6 @@
         <div id="page-wrapper">
 
             <!-- Header -->
-            <header id="header">
-                <div class="logo container">
-                    <div>
-                        <h1><a href="indexLogin.jsp" id="logo">Perpustakaan Dewe</a></h1>
-                        <p></p>
-                    </div>
-                </div>
-            </header>
 
             <!-- Nav -->
             <nav id="nav">
@@ -41,13 +36,11 @@
             <!--Banner-->                                            
             <div id="banner-wrapper">
                 <section id="banner">
-                    <h2>Login</h2>
-                    <form action="ControlLogin" method="post">
-                    <table>
-                        <tr><td><input type="text" name="user[id]" id="id" placeholder="ID" />
-                        <tr><td><input type="password" name="user[pasword]" id="pass" placeholder="Password" />
-                        <tr><td><input type="submit" value="Login"/>
-                    </table>
+                    <h4>Yakin akan Logout?</h4>
+                    <form action="ControlLogout" method="post">
+                        <table>
+                            <tr><td><input type="submit" value="Logout"/>
+                        </table>
                     </form>
                 </section>
             </div>
@@ -55,15 +48,15 @@
             <!-- Footer -->
             <footer id="footer" class="container">
 
-                        <!-- Contact -->
-                        <section>
-                            <h2 class="major"><span>Kontak</span></h2>
-                            <ul class="contact">
-                                <li><a class="icon fa-facebook" href="#"><span class="label">Facebook</span></a></li>
-                                <li><a class="icon fa-twitter" href="#"><span class="label">Twitter</span></a></li>
-                                <li><a class="icon fa-instagram" href="#"><span class="label">Instagram</span></a></li>
-                            </ul>
-                        </section>
+                <!-- Contact -->
+                <section>
+                    <h2 class="major"><span>Kontak</span></h2>
+                    <ul class="contact">
+                        <li><a class="icon fa-facebook" href="#"><span class="label">Facebook</span></a></li>
+                        <li><a class="icon fa-twitter" href="#"><span class="label">Twitter</span></a></li>
+                        <li><a class="icon fa-instagram" href="#"><span class="label">Instagram</span></a></li>
+                    </ul>
+                </section>
 
                 <!-- Copyright -->
                 <div id="copyright">

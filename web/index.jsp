@@ -7,17 +7,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="Model.Buku"%>
 <!DOCTYPE html>
-<%
-    String key = request.getParameter("key");
-    
-    Buku[] bk = Buku.getListPencarian(key);
-    if (Buku.getListPencarian(key)==null) {
-            RequestDispatcher dispatcher;
-            request.setAttribute("error", "Buku Tidak Ditemukan");
-            dispatcher = request.getRequestDispatcher("error.jsp");
-            dispatcher.forward(request, response);
-        }
-%>
 <html>
     <head>
         <title>Home Perpustakaan Dewe</title>

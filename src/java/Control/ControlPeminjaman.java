@@ -42,37 +42,39 @@ public class ControlPeminjaman extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
         try (PrintWriter out = response.getWriter()) {
-            String timeStamp = new SimpleDateFormat("yyMMdd").format(Calendar.getInstance().getTime());
+            //deklarasi kelas dan timeStamp
+            String timeStamp = new SimpleDateFormat("ddMMyyyy").format(Calendar.getInstance().getTime());
             Pinjam p = new Pinjam();
             Anggota a = new Anggota();
-            int i = 0;
-            Cookie cookie = null;
-            Cookie[] cookies = null;
-            cookies = request.getCookies();
+            String id = null;
+            //cookies
+            Cookie[] cookies = request.getCookies();
             if (cookies != null) {
-                for (Cookie cookie1 : cookies) {
-                    cookie = cookie1;
-                    if ("id".equals(cookie.getName())) {
-                        a.panggilAnggota(cookie.getValue());
-                        p.setID_Peminjam(a.getID_Angota());
+                for (int i = 0; i < cookies.length; i++) {
+                    Cookie c = cookies[i];
+                    //cek nilai
+                    if (c.getName().equals("id")) {
+                        id = c.getValue();
                     }
                 }
             }
-            Buku bk[] = null;
-            while (request.getParameter("data" + String.valueOf(i)) != null) {
-                bk[i].getBuku(request.getParameter("data" + String.valueOf(i)));
-                i++;
+            //get parameter
+            String pinjam = request.getParameter("isbn");
+            if (Buku.cekKetersediaan(pinjam) < 1) {
+                RequestDispatcher dispatcher;
+                request.setAttribute("error", "Maaf Buku Tidak Tersedia");
+                dispatcher = request.getRequestDispatcher("error.jsp");
+                dispatcher.forward(request, response);
             }
-            for (int j = 0; j < i; j++) {
-                p.setID_Buku(bk[j].getISBN());
-                p.setTanggal_pinjam(timeStamp);
-                p.setTanggal_kembali(null);
-                p.setWaktu_pinjam(7);
-                a.simpanPeminjaman(p);
-                bk[i].cekKetersediaan(p.getID_Buku());
-                bk[i].UpdateKetersediaan(p.getID_Buku(), (bk[i].getKetersediaan()-1));
-            }
-            this.tampil(request, response, "Data Peminjaman Tersimpan");
+            //simpan dan update ketersediaan
+            p.setID_Peminjam(id);
+            p.setID_Buku(pinjam);
+            p.setTanggal_pinjam(timeStamp);
+            p.setWaktu_pinjam(7);
+            a.simpanPeminjaman(p);
+            int sedia = Buku.cekKetersediaan(p.getID_Buku());
+            Buku.UpdateKetersediaan(p.getID_Buku(), (sedia - 1));
+            this.tampil(request, response, "Peminjaman Tersimpan");
         }
     }
 

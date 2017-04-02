@@ -4,13 +4,14 @@
 <%
     String key = request.getParameter("key");
 
-    Buku[] bk = Buku.getListPencarian(key);
-    if (bk == null) {
+    Buku b = new Buku();
+    if (b.cekBuku(key) == false || key == "") {
         RequestDispatcher dispatcher;
-        request.setAttribute("error", "Siswa tidak ditemukan");
+        request.setAttribute("error", "Buku tidak ditemukan");
         dispatcher = request.getRequestDispatcher("error.jsp");
         dispatcher.forward(request, response);
     }
+    Buku[] bk = Buku.getListPencarian(key);
 %>
 <!DOCTYPE HTML>
 <!--
@@ -19,6 +20,9 @@
         Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
 <html>
+    <%  String information = String.valueOf(request.getAttribute("info"));
+        request.setAttribute("info", information);
+    %>
     <head>
         <title>Search Result</title>
         <meta charset="utf-8" />
@@ -71,41 +75,34 @@
                     <div class="row 200%">
                         <div class="12u">
                             <h3>Hasil Pencarian:</h3>
+                            <p>Klik Kode ISBN untuk melakukan peminjaman</p>
                             <form action="ControlPeminjaman" method="post">
                                 <table id="customers" >
                                     <tr>
-                                        <td>
-                                            ✓ 
-                                        </td>
-                                        <td>
-                                            ISBN
-                                        </td>
-                                        <td>
-                                            Judul
-                                        </td>
-                                        <td>
-                                            Penulis
-                                        </td>
-                                        <td>
-                                            Tahun Terbit
-                                        </td>
-                                        <td>
-                                            Penerbit
-                                        </td>
-                                        <td>
-                                            Ketersediaan
-                                        </td>
+                                        <th>
+                                            <b>ISBN</b>
+                                        </th>
+                                        <th>
+                                            <b>Judul</b>
+                                        </th>
+                                        <th>
+                                            <b>Penulis</b>
+                                        </th>
+                                        <th>
+                                            <b>Tahun Terbit</b>
+                                        </th>
+                                        <th>
+                                            <b>Penerbit</b>
+                                        </th>
+                                        <th>
+                                            <b>Ketersediaan</b>
+                                        </th>
                                     </tr>
                                     <%for (int i = 0; i < bk.length; i++) {%>
                                     <tr>
-                                        <td>
-                                            <input type="checkbox" name="data<%=i%>"
+                                        <td><input type="submit" name="isbn"
                                                    value="<%= bk[i].getISBN()%>" 
-                                                   <%Cookie cookie = new Cookie("ISBN", bk[i].getISBN());
-                                                       response.addCookie(cookie);%> />
-                                        </td>
-                                        <td>
-                                            <%= bk[i].getISBN()%></a>
+                                                   height="0.75em"/>
                                         </td>
                                         <td>
                                             <%= bk[i].getJudul()%>
@@ -125,7 +122,6 @@
                                     </tr>
                                     <%}%>
                                 </table>
-                                <input type="submit" value="Pinjam" />
                             </form>
                         </div>
                     </div>

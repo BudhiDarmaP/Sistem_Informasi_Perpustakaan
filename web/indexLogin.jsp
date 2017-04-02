@@ -9,18 +9,20 @@
 <%@page import="Model.Buku"%>
 <%@page import='javax.servlet.http.Cookie'%>
 <!DOCTYPE html>
-<%
-    String key = request.getParameter("key");
 
-    Buku[] bk = Buku.getListPencarian(key);
-    if (Buku.getListPencarian(key) == null) {
-        RequestDispatcher dispatcher;
-        request.setAttribute("error", "Buku Tidak Ditemukan");
-        dispatcher = request.getRequestDispatcher("error.jsp");
-        dispatcher.forward(request, response);
-    }
-%>
 <html>
+    <%  String id = null;
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (int i = 0; i < cookies.length; i++) {
+                Cookie c = cookies[i];
+                //cek nilai
+                if (c.getName().equals("id")) {
+                    id = c.getValue();
+                }
+            }
+        }
+    %>
     <head>
         <title>Home Perpustakaan Dewe</title>
         <meta charset="utf-8" />
@@ -36,26 +38,11 @@
             <header id="header">
                 <div class="logo container">
                     <div>
-                        <h1><%= request.getAttribute("info")%> 
-                            di Perpustakaan Dewe</h1>
+                        <h1>Selamat Datang</h1>
+                        <h6><%= id%>.</h6>
                     </div>
                 </div>
             </header>
-            <!--%  Anggota a = new Anggota();
-                Cookie cookie = null;
-                Cookie[] cookies = null;
-                // Get cookies
-                cookies = request.getCookies();
-                if (cookies != null) {
-                    for (int i = 0; i < cookies.length; i++) {
-                        cookie = cookies[i];
-                        cookie.getName();
-                        String id = cookie.getValue().substring(33, 38);%--!>
-            <%--<%= id%>--%>
-            <!--<--%}-->
-            <!--} else {%>-->
-            <!--<a href="Login.jsp">No Login  </a>-->
-            <!--%}%--!>
 
             <!-- Nav -->
             <nav id="nav">

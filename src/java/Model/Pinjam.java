@@ -23,7 +23,7 @@ public class Pinjam {
     private String tanggal_pinjam;
     private int waktu_pinjam;
     private String tanggal_kembali;
-    private boolean status;
+    private String status;
 
     public String getID_Peminjam() {
         return ID_Peminjam;
@@ -65,29 +65,36 @@ public class Pinjam {
         this.tanggal_kembali = tanggal_kembali;
     }
 
-    public boolean isStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(String status) {
         this.status = status;
     }
-
-    public static String UpdateKetersediaan1(String idbuku) {
+    public static Pinjam[] getListPinjaman(String id) {
         Connection conn = null;
         Statement st = null;
         ResultSet rs = null;
         conn = DatabaseManager.getDBConnection();
-        Buku b = new Buku();
+        Pinjam []p = null;
         try {
             st = conn.createStatement();
-            rs = st.executeQuery("SELECT * FROM PTI_BUKU WHERE ISBN='" + idbuku + "'");
+            rs = st.executeQuery("SELECT COUNT (*) TOTAL FROM PTI_PINJAM "
+                    + "WHERE (ID_PEMINJAM='"+id+"' AND STATUS='N')");
             rs.next();
-            rs = st.executeQuery("SELECT KETERSEDIAAN FROM PTI_BUKU "
-                    + "WHERE ISBN='" + idbuku + "'");
+            p = new Pinjam[rs.getInt(1)];
+            rs = st.executeQuery("SELECT * FROM PTI_PINJAM "
+                    + "WHERE (ID_PEMINJAM='"+id+"' AND STATUS='N')");
             int index = 0;
             while (rs.next()) {
-                b.setKetersediaan(rs.getInt(1));
+                p[index] = new Pinjam();
+                p[index].setID_Peminjam(rs.getString(1));
+                p[index].setID_Buku(rs.getString(2));
+                p[index].setTanggal_pinjam(rs.getString(3));
+                p[index].setWaktu_pinjam(rs.getInt(4));
+                p[index].setTanggal_kembali(rs.getString(5));
+                p[index].setStatus(rs.getString(6));
                 index++;
             }
         } catch (SQLException ex) {
@@ -101,33 +108,33 @@ public class Pinjam {
                 System.out.println(ex.getMessage());
             }
         }
-        return UpdateKetersediaan2(b.getKetersediaan() + 1, idbuku);
+        return p;
     }
-
-    public static String UpdateKetersediaan2(int jumlah, String idbuku) {
-        String text = null;
+    public static int cekPeminjaman(String id) {
         Connection conn = null;
-        PreparedStatement ps = null;
         Statement st = null;
         ResultSet rs = null;
         conn = DatabaseManager.getDBConnection();
+        int cek = 0;
         try {
-            ps = conn.prepareCall("UPDATE PTI_PINJAM SET KETERSEDIAAN='?' WHERE ID ='?'");
-            ps.setInt(1, jumlah);
-            ps.setString(2, idbuku);
-            ps.executeUpdate();
-            conn.commit();
-        } catch (SQLException ex) {
+            st = conn.createStatement();
+            rs = st.executeQuery("SELECT COUNT (*) FROM PTI_PINJAM WHERE"
+                    + "(ID_PEMINJAM='" + id + "' AND STATUS='N')");
+            rs.next();
+            cek = Integer.parseInt(rs.getString(1));
 
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
         } finally {
             try {
-                ps.close();
+                rs.close();
+                st.close();
                 conn.close();
             } catch (SQLException ex) {
-
+                System.out.println(ex.getMessage());
             }
         }
-        return text;
+        return cek;
     }
 
     public static String Pengembalian(String kembali, String IDbuku, String IDanggota) {

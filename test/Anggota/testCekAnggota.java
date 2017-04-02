@@ -11,11 +11,16 @@ import Model.Anggota;
  *
  * @author budhidarmap
  */
-public class testPanggilAnggota {
+public class testCekAnggota {
 
     public static void main(String[] args) {
         Anggota a = new Anggota();
-        a = Anggota.panggilAnggota("145314063");
-        System.out.println(a.getNama());
+        String id ="145314063";
+        if (a.cekAnggota(id)==1) {
+            System.out.println("Anggota Terdaftar");
+        }
+        else {
+            System.out.println("Anggota Tidak Terdaftar");
+        }
     }
 }

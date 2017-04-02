@@ -3,23 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Anggota;
+package Buku;
 
-import Model.Anggota;
+import Model.Buku;
 
 /**
  *
  * @author budhidarmap
  */
-public class testLoginAnggota {
-
+public class testCekKetersediaan {
     public static void main(String[] args) {
-        Anggota a = null;
-        if (a.LoginAnggota("145314009", "budhi")) {
-            System.out.println("Login");
-        }
-        else{
-            System.out.println("Gagal");
-        }
+        Buku b= new Buku();
+        System.out.println(Buku.cekKetersediaan("9781449356569"));
     }
 }

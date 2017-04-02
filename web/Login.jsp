@@ -1,3 +1,4 @@
+<%@page import="Model.Anggota"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="Model.Buku"%>
 <!DOCTYPE html>
@@ -32,8 +33,6 @@
                         <a href="#">Menu</a>
                         <ul>
                             <li><a href="Daftar.jsp">Daftar</a></li>
-                            <li><a href="#">Peminjaman</a></li>
-                            <li><a href="#">Pengembalian</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -46,8 +45,9 @@
                     <form action="ControlLogin" method="post">
                     <table>
                         <tr><td><input type="text" name="user[id]" id="id" placeholder="ID" />
-                        <tr><td><input type="password" name="user[pasword]" id="pass" placeholder="Password" />
+                        <tr><td><input type="password" name="user[password]" id="pass" placeholder="Password" />
                         <tr><td><input type="submit" value="Login"/>
+                    <p><%= request.getAttribute("error")%></p>
                     </table>
                     </form>
                 </section>

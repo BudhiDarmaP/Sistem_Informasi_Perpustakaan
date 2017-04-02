@@ -1846,6 +1846,25 @@ html, body {
         font-size: 1.65em;
         padding: 0.85em 1.85em;
     }
+    #books .button {
+        -moz-transition: border-color .2s ease-in-out, color .2s ease-in-out;
+        -webkit-transition: border-color .2s ease-in-out, color .2s ease-in-out;
+        -ms-transition: border-color .2s ease-in-out, color .2s ease-in-out;
+        transition: border-color .2s ease-in-out, color .2s ease-in-out;
+        color: #b4b7b5;
+        background: transparent !important;
+        border: solid 2px #575d59;
+        border-color: rgba(87, 93, 89, 0.35);
+        border-radius: 16px;
+    }
+    input[type="button"],
+    input[type="submit"],
+    input[type="reset"],
+    button,
+    #customers .button {
+        font-size: 1em;
+        padding: 0.8em 1em;
+    }
 
     /* List */
 

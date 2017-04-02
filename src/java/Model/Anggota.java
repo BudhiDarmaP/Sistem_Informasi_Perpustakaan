@@ -23,7 +23,7 @@ public class Anggota {
     private String email;
     private String no_tlp;
     private String alamat;
-    protected String password;
+    private String password;
 
     public String getNama() {
         return Nama;
@@ -73,7 +73,7 @@ public class Anggota {
         this.password = password;
     }
 
-    public static Anggota LoginAnggota(String id, String pass) {
+    public static boolean LoginAnggota(String id, String pass) {
         Connection conn = null;
         Statement st = null;
         ResultSet rs = null;
@@ -81,15 +81,13 @@ public class Anggota {
         Anggota a = new Anggota();
         try {
             st = conn.createStatement();
-            rs = st.executeQuery("SELECT * FROM PTI_ANGGOTA WHERE "
+            rs = st.executeQuery("SELECT COUNT (*) FROM PTI_ANGGOTA WHERE "
                     + "ID='" + id + "' AND PASSWORD='" + pass + "'");
             rs.next();
-            a.setID_Angota(rs.getString(1));
-            a.setNama(rs.getString(2));
-            a.setEmail(rs.getString(3));
-            a.setNo_tlp(rs.getString(4));
-            a.setAlamat(rs.getString(5));
-            a.setPassword(rs.getString(6));
+            int nilai = Integer.parseInt(rs.getString(1));
+            if (nilai==0) {
+                return false;
+            }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         } finally {
@@ -101,7 +99,7 @@ public class Anggota {
                 System.out.println(ex.getMessage());
             }
         }
-        return a;
+        return true;
     }
 
     public static int panggilID(String tgl) {
@@ -134,6 +132,33 @@ public class Anggota {
         return index;
     }
 
+    public static int cekAnggota(String id) {
+        Connection conn = null;
+        Statement st = null;
+        ResultSet rs = null;
+        conn = DatabaseManager.getDBConnection();
+        int cek = 0;
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery("SELECT COUNT (*) FROM PTI_ANGGOTA WHERE"
+                    + "(ID=" + id + ")");
+            rs.next();
+            cek = Integer.parseInt(rs.getString(1));
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        } finally {
+            try {
+                rs.close();
+                st.close();
+                conn.close();
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        return cek;
+    }
+
     public static Anggota panggilAnggota(String id) {
         Connection conn = null;
         Statement st = null;
@@ -142,10 +167,16 @@ public class Anggota {
         Anggota a = new Anggota();
         try {
             st = conn.createStatement();
-            rs = st.executeQuery("SELECT NAMA FROM PTI_ANGGOTA WHERE"
+            rs = st.executeQuery("SELECT * FROM PTI_ANGGOTA WHERE"
                     + "(ID=" + id + ")");
             rs.next();
-            a.setNama(rs.getString(1));
+            a.setID_Angota(rs.getString(1));
+            a.setNama(rs.getString(2));
+            a.setEmail(rs.getString(3));
+            a.setNo_tlp(rs.getString(4));
+            a.setAlamat(rs.getString(5));
+            a.setPassword(rs.getString(6));
+
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         } finally {

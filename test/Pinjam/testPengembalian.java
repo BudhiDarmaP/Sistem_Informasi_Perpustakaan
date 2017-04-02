@@ -17,6 +17,6 @@ public class testPengembalian {
     public static void main(String[] args) {
         String timeStamp = new SimpleDateFormat("ddMMyyyy").format(Calendar.getInstance().getTime());
         Pinjam p = new Pinjam();
-        p.Pengembalian(timeStamp, "9780596529260", "145314000");
+        p.Pengembalian(timeStamp, "9781449356569", "145314000");
     }
 }
