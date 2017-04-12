@@ -1,5 +1,5 @@
 --------------------------------------------------------
---  File created - Friday-March-31-2017   
+--  File created - Wednesday-April-12-2017   
 --------------------------------------------------------
 --------------------------------------------------------
 --  DDL for Table PTI_PINJAM
@@ -19,7 +19,9 @@
   TABLESPACE "USERS" ;
 REM INSERTING into SIA.PTI_PINJAM
 SET DEFINE OFF;
-Insert into SIA.PTI_PINJAM (ID_PEMINJAM,ID_BUKU,TANGGAL_PINJAM,WAKTU_PINJAM,TANGGAL_KEMBALI,STATUS) values ('145314000','9781449356569',to_date('31-MAR-17','DD-MON-RR'),7,null,'N');
+Insert into SIA.PTI_PINJAM (ID_PEMINJAM,ID_BUKU,TANGGAL_PINJAM,WAKTU_PINJAM,TANGGAL_KEMBALI,STATUS) values ('145314000','9781449356569',to_date('31-MAR-17','DD-MON-RR'),7,to_date('02-APR-17','DD-MON-RR'),'Y');
+Insert into SIA.PTI_PINJAM (ID_PEMINJAM,ID_BUKU,TANGGAL_PINJAM,WAKTU_PINJAM,TANGGAL_KEMBALI,STATUS) values ('145314063','9780596529260',to_date('02-APR-17','DD-MON-RR'),7,to_date('02-APR-17','DD-MON-RR'),'Y');
+Insert into SIA.PTI_PINJAM (ID_PEMINJAM,ID_BUKU,TANGGAL_PINJAM,WAKTU_PINJAM,TANGGAL_KEMBALI,STATUS) values ('145314000','9781449356569',to_date('02-APR-17','DD-MON-RR'),7,to_date('02-APR-17','DD-MON-RR'),'Y');
 --------------------------------------------------------
 --  Constraints for Table PTI_PINJAM
 --------------------------------------------------------
