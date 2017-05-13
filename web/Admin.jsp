@@ -49,11 +49,11 @@
                     <li>
                         <a href="#">Menu</a>
                         <ul>
-                            <li><a href="Peminjaman.jsp">Peminjaman</a></li>
-                            <li><a href="Pengembalian.jsp">Pengembalian</a></li>
-                            <li><a href="EditAccount.jsp">Edit Account</a></li>
-                            <li><a href="EditPassword.jsp">Edit Password</a></li>
-                            <li><a href="Logout.jsp">Logout</a></li>
+                            <li><a href="TambahBuku.jsp">Tambah Buku</a></li>
+                            <li><a href="searchEditBuku.jsp">Edit Buku</a></li>
+                            <li><a href="searchHapusBuku.jsp">Hapus Buku</a></li>
+                            <li><a href="searchHapusAnggota.jsp">Hapus Anggota</a></li>
+                            <li><a href="LogoutAdmin.jsp">Logout</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -63,7 +63,7 @@
             <div id="banner-wrapper">
                 <section id="banner">
                     <h2>Pencarian Buku</h2>
-                    <form action="resultSearchLogin.jsp" method="get">
+                    <form action="resultSearchAdmin.jsp" method="get">
                         <table>
                             <tr><td><input type="text" name="key" id="email" placeholder="Cari Buku" />
                             <tr><td><input type="submit" value="Cari"/>

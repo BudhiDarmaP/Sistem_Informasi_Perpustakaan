@@ -1,16 +1,6 @@
 <%@page import="Model.Buku"%>
 <%@page import="Model.Anggota"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%
-    String key = request.getParameter("key");
-    Buku[] bk = Buku.getListPencarian(key);
-    if (bk.length < 1) {
-        RequestDispatcher dispatcher;
-        request.setAttribute("error", "Buku tidak ditemukan");
-        dispatcher = request.getRequestDispatcher("error.jsp");
-        dispatcher.forward(request, response);
-    }
-%>
 <!DOCTYPE HTML>
 <!--
         Dimension by HTML5 UP
@@ -18,6 +8,16 @@
         Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
 <html>
+    <%
+        String key = "";
+
+        if (request.getParameter("key") != null) {
+            key = request.getParameter("key");
+        }
+
+        Buku b = new Buku();
+        Buku[] bk = Buku.getListPencarian(key);
+    %>
     <head>
         <title>Search Result</title>
         <meta charset="utf-8" />
@@ -48,8 +48,6 @@
                         <ul>
                             <li><a href="Peminjaman.jsp">Peminjaman</a></li>
                             <li><a href="Pengembalian.jsp">Pengembalian</a></li>
-                            <li><a href="EditAccount.jsp">Edit Account</a></li>
-                            <li><a href="EditPassword.jsp">Edit Password</a></li>
                             <li><a href="Logout.jsp">Logout</a></li>
                         </ul>
                     </li>
@@ -58,7 +56,7 @@
 
             <!--Banner-->                                            
             <section id="banner">
-                <form action="resultSearchLogin" method="get">
+                <form action="searchEditBuku.jsp" method="get">
                     <table>
                         <tr><td><input type="text" name="key" id="email" placeholder="Cari Buku" />
                         <tr><td><input type="submit" value="Cari"/>
@@ -72,8 +70,8 @@
                     <div class="row 200%">
                         <div class="12u">
                             <h3>Hasil Pencarian:</h3>
-                            <p>Klik Kode ISBN untuk melakukan peminjaman</p>
-                            <form action="ControlPeminjaman" method="post">
+                            <p>Klik Kode ISBN untuk Edit Buku</p>
+                            <form action="EditBuku.jsp" method="post">
                                 <table id="customers" >
                                     <tr>
                                         <th>

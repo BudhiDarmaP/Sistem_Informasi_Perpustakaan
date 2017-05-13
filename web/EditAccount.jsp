@@ -1,28 +1,20 @@
-<%-- 
-    Document   : index
-    Created on : Mar 28, 2017, 6:33:52 AM
-    Author     : budhidarmap
---%>
-
 <%@page import="Control.CookieUtilities"%>
-<%@page import="Model.Anggota"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="Model.Buku"%>
-<%@page import='javax.servlet.http.Cookie'%>
 <!DOCTYPE html>
-
+<%  if (CookieUtilities.getCookie(request, "id") == null) {
+        RequestDispatcher dispatcher;
+        request.setAttribute("error", "Login Expired, Silahkan Login Ulang");
+        dispatcher = request.getRequestDispatcher("Login.jsp");
+        dispatcher.forward(request, response);
+    }
+    Cookie cookie = CookieUtilities.getCookie(request, "id");
+    String id = cookie.getValue();
+    Anggota a = Anggota.panggilAnggota(id);
+%>
 <html>
-    <%  if (CookieUtilities.getCookie(request, "id") == null) {
-            RequestDispatcher dispatcher;
-            request.setAttribute("error", "Login Expired, Silahkan Login Ulang");
-            dispatcher = request.getRequestDispatcher("Login.jsp");
-            dispatcher.forward(request, response);
-        }
-        Cookie cookie = CookieUtilities.getCookie(request, "id");
-        String id = cookie.getValue();
-    %>
     <head>
-        <title>Home Perpustakaan Dewe</title>
+        <title>Pendaftaran</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
@@ -36,8 +28,8 @@
             <header id="header">
                 <div class="logo container">
                     <div>
-                        <h1>Selamat Datang</h1>
-                        <h6><%= Anggota.panggilAnggota(id).getNama()%>.</h6>
+                        <h1><a href="indexLogin.jsp" id="logo">Perpustakaan Dewe</a></h1>
+                        <p></p>
                     </div>
                 </div>
             </header>
@@ -45,13 +37,12 @@
             <!-- Nav -->
             <nav id="nav">
                 <ul>
-                    <li class="current">Home</a></li>
+                    <li class="current"><a href="indexLogin.jsp">Home</a></li>
                     <li>
                         <a href="#">Menu</a>
                         <ul>
                             <li><a href="Peminjaman.jsp">Peminjaman</a></li>
                             <li><a href="Pengembalian.jsp">Pengembalian</a></li>
-                            <li><a href="EditAccount.jsp">Edit Account</a></li>
                             <li><a href="EditPassword.jsp">Edit Password</a></li>
                             <li><a href="Logout.jsp">Logout</a></li>
                         </ul>
@@ -62,19 +53,37 @@
             <!--Banner-->                                            
             <div id="banner-wrapper">
                 <section id="banner">
-                    <h2>Pencarian Buku</h2>
-                    <form action="resultSearchLogin.jsp" method="get">
+                    <h2>Edit Akun</h2>
+                    <form action="ControlEditAccount" method="post">
                         <table>
-                            <tr><td><input type="text" name="key" id="email" placeholder="Cari Buku" />
-                            <tr><td><input type="submit" value="Cari"/>
+                            <tr><td><input type="text" name="nama" id="email" value="<%=a.getNama()%>"/>
+                            <tr><td><input type="email" name="email" id="email" value="<%=a.getEmail()%>"/>
+                            <tr><td><input type="text" name="no_tlp" id="phone" value="<%=a.getNo_tlp()%>"/>
+                            <tr><td><input type="text" name="alamat" id="alamat" value="<%=a.getAlamat()%>"/>
+                            <tr><td><input type="password" name="password" id="password" placeholder="Password" />
+                            <tr><ul class="actions">
+                                <li><input type="submit" value="Edit" class="special" /></li>
+                                <li><input type="reset" value="Reset" /></li>
                         </table>
                     </form>
                 </section>
             </div>
 
-
-            <!--Footer--> 
+            <!-- Footer -->
             <footer id="footer" class="container">
+                <div class="row 200%">
+                    <div class="12u">
+
+                        <!-- About -->
+                        <section>
+                            <h2 class="major"><span>What's this about?</span></h2>
+                            <p>
+                                <strong>Blank</strong>
+                            </p>
+                        </section>
+
+                    </div>
+                </div>
                 <div class="row 200%">
                     <div class="12u">
 

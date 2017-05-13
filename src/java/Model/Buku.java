@@ -224,23 +224,89 @@ public class Buku {
         try {
             st = conn.createStatement();
             rs = st.executeQuery("SELECT COUNT (*) TOTAL FROM PTI_BUKU "
-                    + "WHERE ("
+                    + "WHERE "
+                    //isbn
+                    + "(ISBN LIKE '" + key + "%' OR  "
                     + "ISBN LIKE '%" + key + "%' OR  "
+                    + "ISBN LIKE '%" + key + "' OR  "
+                    //judul
+                    + "JUDUL LIKE UPPER('" + key + "%') OR "
+                    + "JUDUL LIKE LOWER('" + key + "%') OR "
+                    + "JUDUL LIKE '" + key + "%' OR "
+                    + "JUDUL LIKE UPPER('%" + key + "%') OR "
+                    + "JUDUL LIKE LOWER('%" + key + "%') OR "
                     + "JUDUL LIKE '%" + key + "%' OR "
+                    + "JUDUL LIKE UPPER('%" + key + "') OR "
+                    + "JUDUL LIKE LOWER('%" + key + "') OR "
+                    + "JUDUL LIKE '%" + key + "' OR "
+                    //penulis
+                    + "PENULIS LIKE UPPER('" + key + "%') OR "
+                    + "PENULIS LIKE LOWER('" + key + "%') OR "
+                    + "PENULIS LIKE '" + key + "%' OR "
+                    + "PENULIS LIKE UPPER('%" + key + "%') OR "
+                    + "PENULIS LIKE LOWER('%" + key + "%') OR "
                     + "PENULIS LIKE '%" + key + "%' OR "
+                    + "PENULIS LIKE UPPER('%" + key + "') OR "
+                    + "PENULIS LIKE LOWER('%" + key + "') OR "
+                    + "PENULIS LIKE '%" + key + "' OR "
+                    //penerbit
+                    + "PENERBIT LIKE UPPER('" + key + "%') OR "
+                    + "PENERBIT LIKE LOWER('" + key + "%') OR "
                     + "PENERBIT LIKE '%" + key + "%' OR "
-                    + "TAHUN_TERBIT LIKE '%" + key + "%' AND "
-                    + "KETERSEDIAAN > 0)");
+                    + "PENERBIT LIKE UPPER('%" + key + "%') OR "
+                    + "PENERBIT LIKE LOWER('%" + key + "%') OR "
+                    + "PENERBIT LIKE '%" + key + "' OR "
+                    + "PENERBIT LIKE UPPER('%" + key + "') OR "
+                    + "PENERBIT LIKE LOWER('%" + key + "') OR "
+                    //TAHUN_TERBIT
+                    + "TAHUN_TERBIT LIKE '" + key + "%' OR "
+                    + "TAHUN_TERBIT LIKE '%" + key + "%' OR "
+                    + "TAHUN_TERBIT LIKE '%" + key + "') AND "
+                    //copy
+                    + "KETERSEDIAAN > 0");
             rs.next();
             bk = new Buku[rs.getInt(1)];
             rs = st.executeQuery("SELECT * FROM PTI_BUKU "
                     + "WHERE ("
+                    //isbn
+                    + "ISBN LIKE '" + key + "%' OR  "
                     + "ISBN LIKE '%" + key + "%' OR  "
+                    + "ISBN LIKE '%" + key + "' OR  "
+                    //judul
+                    + "JUDUL LIKE UPPER('" + key + "%') OR "
+                    + "JUDUL LIKE LOWER('" + key + "%') OR "
+                    + "JUDUL LIKE '" + key + "%' OR "
+                    + "JUDUL LIKE UPPER('%" + key + "%') OR "
+                    + "JUDUL LIKE LOWER('%" + key + "%') OR "
                     + "JUDUL LIKE '%" + key + "%' OR "
+                    + "JUDUL LIKE UPPER('%" + key + "') OR "
+                    + "JUDUL LIKE LOWER('%" + key + "') OR "
+                    + "JUDUL LIKE '%" + key + "' OR "
+                    //penulis
+                    + "PENULIS LIKE UPPER('" + key + "%') OR "
+                    + "PENULIS LIKE LOWER('" + key + "%') OR "
+                    + "PENULIS LIKE '" + key + "%' OR "
+                    + "PENULIS LIKE UPPER('%" + key + "%') OR "
+                    + "PENULIS LIKE LOWER('%" + key + "%') OR "
                     + "PENULIS LIKE '%" + key + "%' OR "
+                    + "PENULIS LIKE UPPER('%" + key + "') OR "
+                    + "PENULIS LIKE LOWER('%" + key + "') OR "
+                    + "PENULIS LIKE '%" + key + "' OR "
+                    //penerbit
+                    + "PENERBIT LIKE UPPER('" + key + "%') OR "
+                    + "PENERBIT LIKE LOWER('" + key + "%') OR "
                     + "PENERBIT LIKE '%" + key + "%' OR "
-                    + "TAHUN_TERBIT LIKE '%" + key + "%' AND "
-                    + "KETERSEDIAAN > 0)");
+                    + "PENERBIT LIKE UPPER('%" + key + "%') OR "
+                    + "PENERBIT LIKE LOWER('%" + key + "%') OR "
+                    + "PENERBIT LIKE '%" + key + "' OR "
+                    + "PENERBIT LIKE UPPER('%" + key + "') OR "
+                    + "PENERBIT LIKE LOWER('%" + key + "') OR "
+                    //tahun_terbit
+                    + "TAHUN_TERBIT LIKE '" + key + "%' OR "
+                    + "TAHUN_TERBIT LIKE '%" + key + "%' OR "
+                    + "TAHUN_TERBIT LIKE '%" + key + "') AND "
+                    //copy
+                    + "KETERSEDIAAN > 0");
             int index = 0;
             while (rs.next()) {
                 bk[index] = new Buku();

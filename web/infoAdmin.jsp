@@ -1,28 +1,16 @@
-<%-- 
-    Document   : index
-    Created on : Mar 28, 2017, 6:33:52 AM
-    Author     : budhidarmap
---%>
-
-<%@page import="Control.CookieUtilities"%>
-<%@page import="Model.Anggota"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="Model.Buku"%>
-<%@page import='javax.servlet.http.Cookie'%>
-<!DOCTYPE html>
-
+<!DOCTYPE HTML>
+<!--
+        Spectral by HTML5 UP
+        html5up.net | @ajlkn
+        Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
 <html>
-    <%  if (CookieUtilities.getCookie(request, "id") == null) {
-            RequestDispatcher dispatcher;
-            request.setAttribute("error", "Login Expired, Silahkan Login Ulang");
-            dispatcher = request.getRequestDispatcher("Login.jsp");
-            dispatcher.forward(request, response);
-        }
-        Cookie cookie = CookieUtilities.getCookie(request, "id");
-        String id = cookie.getValue();
+    <%  String information = String.valueOf(request.getAttribute("info"));
+        request.setAttribute("info", information);
     %>
     <head>
-        <title>Home Perpustakaan Dewe</title>
+        <title>Informasi</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
@@ -36,8 +24,7 @@
             <header id="header">
                 <div class="logo container">
                     <div>
-                        <h1>Selamat Datang</h1>
-                        <h6><%= Anggota.panggilAnggota(id).getNama()%>.</h6>
+                        <h1><a href="Admin.jsp" id="logo">Perpustakaan Dewe</a></h1>
                     </div>
                 </div>
             </header>
@@ -49,11 +36,11 @@
                     <li>
                         <a href="#">Menu</a>
                         <ul>
-                            <li><a href="Peminjaman.jsp">Peminjaman</a></li>
-                            <li><a href="Pengembalian.jsp">Pengembalian</a></li>
-                            <li><a href="EditAccount.jsp">Edit Account</a></li>
-                            <li><a href="EditPassword.jsp">Edit Password</a></li>
-                            <li><a href="Logout.jsp">Logout</a></li>
+                            <li><a href="TambahBuku.jsp">Tambah Buku</a></li>
+                            <li><a href="searchEditBuku.jsp">Edit Buku</a></li>
+                            <li><a href="searchHapusBuku.jsp">Hapus Buku</a></li>
+                            <li><a href="searchHapusAnggota.jsp">Hapus Anggota</a></li>
+                            <li><a href="LogoutAdmin.jsp">Logout</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -62,19 +49,17 @@
             <!--Banner-->                                            
             <div id="banner-wrapper">
                 <section id="banner">
-                    <h2>Pencarian Buku</h2>
-                    <form action="resultSearchLogin.jsp" method="get">
-                        <table>
-                            <tr><td><input type="text" name="key" id="email" placeholder="Cari Buku" />
-                            <tr><td><input type="submit" value="Cari"/>
-                        </table>
-                    </form>
+                    <h2><%=request.getAttribute("info")%></h2>
                 </section>
             </div>
 
-
             <!--Footer--> 
             <footer id="footer" class="container">
+                <div class="row 200%">
+                    <div class="12u">
+
+                    </div>
+                </div>
                 <div class="row 200%">
                     <div class="12u">
 

@@ -1,11 +1,13 @@
-<%@page import="Model.Anggota"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="Model.Buku"%>
 <!DOCTYPE html>
 
 <html>
+    <%  String information = String.valueOf(request.getAttribute("info"));
+        request.setAttribute("info", information);
+    %>
     <head>
-        <title>Login</title>
+        <title>Logout</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
@@ -16,23 +18,18 @@
         <div id="page-wrapper">
 
             <!-- Header -->
-            <header id="header">
-                <div class="logo container">
-                    <div>
-                        <h1><a href="index.jsp" id="logo">Perpustakaan Dewe</a></h1>
-                        <p></p>
-                    </div>
-                </div>
-            </header>
 
             <!-- Nav -->
             <nav id="nav">
                 <ul>
-                    <li class="current"><a href="index.jsp">Home</a></li>
+                    <li class="current"><a href="Admin.jsp">Home</a></li>
                     <li>
                         <a href="#">Menu</a>
                         <ul>
-                            <li><a href="Daftar.jsp">Daftar</a></li>
+                            <li><a href="TambahBuku.jsp">Tambah Buku</a></li>
+                            <li><a href="searchEditBuku.jsp">Edit Buku</a></li>
+                            <li><a href="searchHapusBuku.jsp">Hapus Buku</a></li>
+                            <li><a href="searchHapusAnggta.jsp">Hapus Anggota</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -41,15 +38,10 @@
             <!--Banner-->                                            
             <div id="banner-wrapper">
                 <section id="banner">
-                    <h2>Login</h2>
-                    <form action="ControlLogin" method="post">
+                    <h4>Yakin akan Logout?</h4>
+                    <form action="ControlLogout" method="post">
                         <table>
-                            <tr><td><input type="text" name="user[id]" id="id" placeholder="ID" />
-                            <tr><td><input type="password" name="user[password]" id="pass" placeholder="Password" />
-                            <tr><td><input type="submit" value="Login"/>
-                                    <%if (request.getAttribute("error") != null) {%>
-                                    <p><%= request.getAttribute("error")%></p>
-                                    <%}%>
+                            <tr><td><input type="submit" value="Logout"/>
                         </table>
                     </form>
                 </section>

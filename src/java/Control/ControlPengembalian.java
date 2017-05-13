@@ -38,26 +38,17 @@ public class ControlPengembalian extends HttpServlet {
         processRequest(request, response);
         try (PrintWriter out = response.getWriter()) {
             //deklarasi kelas dan timeStamp
-            String timeStamp = new SimpleDateFormat("ddMMyyyy").format(Calendar.getInstance().getTime());
+            String timeStamp = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
             Pinjam p = new Pinjam();
-            String id = null;
             //cookies
-            Cookie[] cookies = request.getCookies();
-            if (cookies != null) {
-                for (int i = 0; i < cookies.length; i++) {
-                    Cookie c = cookies[i];
-                    //cek nilai
-                    if (c.getName().equals("id")) {
-                        id = c.getValue();
-                    }
-                }
-            }
+            Cookie cookie=CookieUtilities.getCookie(request, "id");
+            String id = cookie.getValue();
             //get parameter
             String pinjam = request.getParameter("isbn");
             //pengembalian
             p.Pengembalian(timeStamp, pinjam, id);
-            int sedia = Buku.cekKetersediaan(p.getID_Buku());
-            Buku.UpdateKetersediaan(p.getID_Buku(), (sedia + 1));
+            int sedia = Buku.cekKetersediaan(pinjam);
+            Buku.UpdateKetersediaan(pinjam, (sedia + 1));
             this.tampil(request, response, "Pengembalian Terverifikasi");
         }
     }

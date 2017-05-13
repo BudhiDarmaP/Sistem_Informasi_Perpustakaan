@@ -1,16 +1,8 @@
+<%@page import="Control.CookieUtilities"%>
+<%@page import="Model.Pinjam"%>
 <%@page import="Model.Buku"%>
 <%@page import="Model.Anggota"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%
-    String key = request.getParameter("key");
-    Buku[] bk = Buku.getListPencarian(key);
-    if (bk.length < 1) {
-        RequestDispatcher dispatcher;
-        request.setAttribute("error", "Buku tidak ditemukan");
-        dispatcher = request.getRequestDispatcher("error.jsp");
-        dispatcher.forward(request, response);
-    }
-%>
 <!DOCTYPE HTML>
 <!--
         Dimension by HTML5 UP
@@ -18,8 +10,25 @@
         Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
 <html>
+    <%  String id = null;
+        if (CookieUtilities.getCookie(request, "id") == null) {
+            RequestDispatcher dispatcher;
+            request.setAttribute("error", "Login Expired, Silahkan Login Ulang");
+            dispatcher = request.getRequestDispatcher("Login.jsp");
+            dispatcher.forward(request, response);
+        }
+        Cookie cookie = CookieUtilities.getCookie(request, "id");
+        id = cookie.getValue();
+        if (Pinjam.getListPinjaman(id) == null) {
+            RequestDispatcher dispatcher;
+            request.setAttribute("info", "Tidak Ada Peminjaman Saat Ini");
+            dispatcher = request.getRequestDispatcher("info.jsp");
+            dispatcher.forward(request, response);
+        }
+        Pinjam[] p = Pinjam.getHistory(id);
+    %>
     <head>
-        <title>Search Result</title>
+        <title>Pengembalian</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
@@ -46,7 +55,6 @@
                     <li>
                         <a href="#">Menu</a>
                         <ul>
-                            <li><a href="Peminjaman.jsp">Peminjaman</a></li>
                             <li><a href="Pengembalian.jsp">Pengembalian</a></li>
                             <li><a href="EditAccount.jsp">Edit Account</a></li>
                             <li><a href="EditPassword.jsp">Edit Password</a></li>
@@ -71,52 +79,55 @@
                 <div id="main" class="container">
                     <div class="row 200%">
                         <div class="12u">
-                            <h3>Hasil Pencarian:</h3>
-                            <p>Klik Kode ISBN untuk melakukan peminjaman</p>
-                            <form action="ControlPeminjaman" method="post">
+                            <%if (p.length > 0) {
+                            %>
+                            <h3>Daftar Peminjaman:</h3>
+                            <form action="ControlPengembalian" method="post">
                                 <table id="customers" >
                                     <tr>
-                                        <th>
-                                            <b>ISBN</b>
-                                        </th>
-                                        <th>
-                                            <b>Judul</b>
-                                        </th>
-                                        <th>
-                                            <b>Penulis</b>
-                                        </th>
-                                        <th>
-                                            <b>Tahun Terbit</b>
-                                        </th>
-                                        <th>
-                                            <b>Penerbit</b>
-                                        </th>
-                                        <th>
-                                            <b>Ketersediaan</b>
-                                        </th>
+                                        <td>
+                                            Tanggal Pinjam
+                                        </td>
+                                        <td>
+                                            Tanggal Kembali
+                                        </td>
+                                        <td>
+                                            ID Buku
+                                        </td>
+                                        <td>
+                                            Status
+                                        </td>
                                     </tr>
-                                    <%for (int i = 0; i < bk.length; i++) {%>
+                                    <%for (int i = 0; i < p.length; i++) {%>
                                     <tr>
-                                        <td><input type="submit" name="isbn"
-                                                   value="<%= bk[i].getISBN()%>" 
-                                                   height="0.75em"/>
+                                        <td>
+                                            <%= p[i].getTanggal_pinjam()%>
                                         </td>
                                         <td>
-                                            <%= bk[i].getJudul()%>
+                                            <%= p[i].getTanggal_kembali()%>
                                         </td>
                                         <td>
-                                            <%= bk[i].getPenulis()%>
+                                            <%=p[i].getID_Buku()%>
                                         </td>
+                                        <%  if (p[i].getStatus().equals("N")) {
+                                        %>
                                         <td>
-                                            <%= bk[i].getTahun_Terbit()%>
-                                        </td>
+                                            <div id="RedFont">
+                                                Belum Dikembalikan
+                                            </div>
+                                        </td>   
+                                        <%} else {%>
                                         <td>
-                                            <%= bk[i].getPenerbit()%>
-                                        </td>
-                                        <td>
-                                            <%= bk[i].getKetersediaan()%>
+                                            <div id="BlueFont">
+                                                Sudah Dikembalikan
+                                            </div>
                                         </td>
                                     </tr>
+                                    <%}
+                                        }
+                                    } else {
+                                    %>
+                                    <h1>Tidak Ada Riwayat Peminjaman</h1>
                                     <%}%>
                                 </table>
                             </form>

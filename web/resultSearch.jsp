@@ -3,15 +3,13 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     String key=request.getParameter("key");
-    
-        Buku b = new Buku();
-    if (b.cekBuku(key)==false||key=="") {
+    Buku []bk=Buku.getListPencarian(key);
+    if (bk.length<1) {
         RequestDispatcher dispatcher;
         request.setAttribute("error", "Buku tidak ditemukan");
         dispatcher = request.getRequestDispatcher("errorNo_Login.jsp");
         dispatcher.forward(request, response);
     }
-    Buku []bk=Buku.getListPencarian(key);
 %>
 <!DOCTYPE HTML>
 <!--

@@ -47,6 +47,8 @@
                         <ul>
                             <li><a href="Peminjaman.jsp">Peminjaman</a></li>
                             <li><a href="Pengembalian.jsp">Pengembalian</a></li>
+                            <li><a href="EditAccount.jsp">Edit Account</a></li>
+                            <li><a href="EditPassword.jsp">Edit Password</a></li>
                             <li><a href="Logout.jsp">Logout</a></li>
                         </ul>
                     </li>

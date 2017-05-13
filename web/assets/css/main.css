@@ -2730,5 +2730,13 @@ html, body {
         -ms-transform: translateX(0);
         transform: translateX(0);
     }
-
+}
+#BlueButton{
+    background-color: limegreen;
+}
+#RedFont{
+    color: crimson;    
+}
+#BlueFont{
+    color: cornflowerblue;    
 }

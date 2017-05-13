@@ -33,8 +33,9 @@
             <nav id="nav">
                 <ul>
                     <li class="current"><a href="index.jsp">Home</a></li>
+                    <li><a href="Login.jsp">Admin</a></li>
                     <li>
-                        <a href="#">Menu</a>
+                        <a href="#">Account</a>
                         <ul>
                             <li><a href="Login.jsp">Login</a></li>
                             <li><a href="Daftar.jsp">Daftar</a></li>
@@ -56,86 +57,9 @@
                 </section>
             </div>
 
-            <!--Main--> 
-            <div id="main-wrapper">
-                <div id="main" class="container">
-                    <div class="row 200%">
-                        <div class="12u">
-
-                            Highlight 
-                            <section class="box highlight">
-                            </section>
-
-                        </div>
-                    </div>
-                    <div class="row 200%">
-                        <div class="12u">
-
-                            Features 
-                            <section class="box features">
-                                <h2 class="major"><span>A Major Heading</span></h2>
-                                <div>
-                                    <div class="row">
-                                        <div class="3u 12u(mobile)">
-
-                                            Feature 
-                                            <section class="box feature">
-                                            </section>
-
-                                        </div>
-                                        <div class="3u 12u(mobile)">
-
-                                            Feature 
-                                            <section class="box feature">
-                                            </section>
-
-                                        </div>
-                                        <div class="3u 12u(mobile)">
-
-                                            Feature 
-                                            <section class="box feature">
-                                            </section>
-
-                                        </div>
-                                        <div class="3u 12u(mobile)">
-
-                                            Feature 
-                                            <section class="box feature">
-                                            </section>
-
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="12u">
-                                            <ul class="actions">
-                                                <li><a href="#" class="button big">Do Something</a></li>
-                                                <li><a href="#" class="button alt big">Think About It</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </section>
-
-                        </div>
-                    </div>
-                    <div class="row 200%">
-                        <div class="12u">
-
+            
             <!-- Footer -->
             <footer id="footer" class="container">
-                <div class="row 200%">
-                    <div class="12u">
-
-                        <!-- About -->
-                        <section>
-                            <h2 class="major"><span>What's this about?</span></h2>
-                            <p>
-                                <strong>Blank</strong>
-                            </p>
-                        </section>
-
-                    </div>
-                </div>
                 <div class="row 200%">
                     <div class="12u">
 

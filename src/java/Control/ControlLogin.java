@@ -50,6 +50,7 @@ public class ControlLogin extends HttpServlet {
         Anggota a = null;
         String id = request.getParameter("user[id]");
         String pass = request.getParameter("user[password]");
+        
         try {
             //Check kelengkapan ID dan password
             if (id.equals("")&&pass.equals("")) {
@@ -88,9 +89,15 @@ public class ControlLogin extends HttpServlet {
         a=Anggota.panggilAnggota(id);
         String pesan = a.getID_Angota();
         //simpan cookie
-        Cookie ID = new Cookie("id", id);;
+        Cookie ID = new LongLivedCookie("id", id);
         response.addCookie(ID);
         //lempar
+        if (a.LoginAnggota(id, pass)==true&&id.equals("0")) {
+            RequestDispatcher dispatcher;
+            request.setAttribute("info", "Anda Masuk Sebagai ADMIN");
+            dispatcher = request.getRequestDispatcher("Admin.jsp");
+            dispatcher.forward(request, response);
+        }
         this.tampil(request, response, pesan);
     }
 
@@ -102,7 +109,7 @@ public class ControlLogin extends HttpServlet {
     public void returnError(HttpServletRequest request, HttpServletResponse response, Exception e) throws ServletException, IOException {
         RequestDispatcher dispatcher;
         request.setAttribute("error", e.getMessage());
-        dispatcher = request.getRequestDispatcher("error.jsp");
+        dispatcher = request.getRequestDispatcher("errorNo_Login.jsp");
         dispatcher.forward(request, response);
     }
 

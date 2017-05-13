@@ -1,16 +1,6 @@
 <%@page import="Model.Buku"%>
 <%@page import="Model.Anggota"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%
-    String key = request.getParameter("key");
-    Buku[] bk = Buku.getListPencarian(key);
-    if (bk.length < 1) {
-        RequestDispatcher dispatcher;
-        request.setAttribute("error", "Buku tidak ditemukan");
-        dispatcher = request.getRequestDispatcher("error.jsp");
-        dispatcher.forward(request, response);
-    }
-%>
 <!DOCTYPE HTML>
 <!--
         Dimension by HTML5 UP
@@ -18,6 +8,14 @@
         Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
 <html>
+    <%
+        String key = "";
+
+        if (request.getParameter("key") != null) {
+            key = request.getParameter("key");
+        }
+        Anggota[] a = Anggota.getListAnggota(key);
+    %>
     <head>
         <title>Search Result</title>
         <meta charset="utf-8" />
@@ -42,15 +40,14 @@
             <!-- Nav -->
             <nav id="nav">
                 <ul>
-                    <li class="current"><a href="indexLogin.jsp">Home</a></li>
+                    <li class="current"><a href="Admin.jsp">Home</a></li>
                     <li>
                         <a href="#">Menu</a>
                         <ul>
-                            <li><a href="Peminjaman.jsp">Peminjaman</a></li>
-                            <li><a href="Pengembalian.jsp">Pengembalian</a></li>
-                            <li><a href="EditAccount.jsp">Edit Account</a></li>
-                            <li><a href="EditPassword.jsp">Edit Password</a></li>
-                            <li><a href="Logout.jsp">Logout</a></li>
+                            <li><a href="TambahBuku.jsp">Tambah Buku</a></li>
+                            <li><a href="searchEditBuku.jsp">Edit Buku</a></li>
+                            <li><a href="searchHapusBuku.jsp">Hapus Buku</a></li>
+                            <li><a href="LogoutAdmin.jsp">Logout</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -58,7 +55,7 @@
 
             <!--Banner-->                                            
             <section id="banner">
-                <form action="resultSearchLogin" method="get">
+                <form action="searchHapusAnggota.jsp" method="get">
                     <table>
                         <tr><td><input type="text" name="key" id="email" placeholder="Cari Buku" />
                         <tr><td><input type="submit" value="Cari"/>
@@ -72,8 +69,8 @@
                     <div class="row 200%">
                         <div class="12u">
                             <h3>Hasil Pencarian:</h3>
-                            <p>Klik Kode ISBN untuk melakukan peminjaman</p>
-                            <form action="ControlPeminjaman" method="post">
+                            <p>Klik Kode ID untuk Hapus Anggota</p>
+                            <form action="HapusAnggota.jsp" method="post">
                                 <table id="customers" >
                                     <tr>
                                         <th>
@@ -95,26 +92,26 @@
                                             <b>Ketersediaan</b>
                                         </th>
                                     </tr>
-                                    <%for (int i = 0; i < bk.length; i++) {%>
+                                    <%for (int i = 1; i < a.length; i++) {%>
                                     <tr>
-                                        <td><input type="submit" name="isbn"
-                                                   value="<%= bk[i].getISBN()%>" 
+                                        <td><input type="submit" name="id"
+                                                   value="<%= a[i].getID_Angota()%>" 
                                                    height="0.75em"/>
                                         </td>
                                         <td>
-                                            <%= bk[i].getJudul()%>
+                                            <%= a[i].getNama()%>
                                         </td>
                                         <td>
-                                            <%= bk[i].getPenulis()%>
+                                            <%= a[i].getEmail()%>
                                         </td>
                                         <td>
-                                            <%= bk[i].getTahun_Terbit()%>
+                                            <%= a[i].getNo_tlp()%>
                                         </td>
                                         <td>
-                                            <%= bk[i].getPenerbit()%>
+                                            <%= a[i].getAlamat()%>
                                         </td>
                                         <td>
-                                            <%= bk[i].getKetersediaan()%>
+                                            <%= a[i].getPassword()%>
                                         </td>
                                     </tr>
                                     <%}%>

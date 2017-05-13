@@ -72,20 +72,65 @@ public class Pinjam {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public static void hapusPinjamBuku(String isbn) {
+        String text = null;
+        Connection conn = null;
+        PreparedStatement ps = null;
+        conn = DatabaseManager.getDBConnection();
+        try {
+            ps = conn.prepareCall("DELETE FROM PTI_PINJAM "
+                    + "WHERE ID_BUKU='" + isbn + "'");
+            ps.executeUpdate();
+            conn.commit();
+            text = "Data sudah dihapus";
+
+        } catch (SQLException ex) {
+        } finally {
+            try {
+                ps.close();
+                conn.close();
+            } catch (SQLException ex) {
+            }
+        }
+    }
+
+    public static void hapusPinjamAnggota(String id) {
+        String text = null;
+        Connection conn = null;
+        PreparedStatement ps = null;
+        conn = DatabaseManager.getDBConnection();
+        try {
+            ps = conn.prepareCall("DELETE FROM PTI_PINJAM "
+                    + "WHERE ID_PEMINJAM='" + id + "'");
+            ps.executeUpdate();
+            conn.commit();
+            text = "Data sudah dihapus";
+
+        } catch (SQLException ex) {
+        } finally {
+            try {
+                ps.close();
+                conn.close();
+            } catch (SQLException ex) {
+            }
+        }
+    }
+
     public static Pinjam[] getListPinjaman(String id) {
         Connection conn = null;
         Statement st = null;
         ResultSet rs = null;
         conn = DatabaseManager.getDBConnection();
-        Pinjam []p = null;
+        Pinjam[] p = null;
         try {
             st = conn.createStatement();
             rs = st.executeQuery("SELECT COUNT (*) TOTAL FROM PTI_PINJAM "
-                    + "WHERE (ID_PEMINJAM='"+id+"' AND STATUS='N')");
+                    + "WHERE (ID_PEMINJAM='" + id + "' AND STATUS='N')");
             rs.next();
             p = new Pinjam[rs.getInt(1)];
             rs = st.executeQuery("SELECT * FROM PTI_PINJAM "
-                    + "WHERE (ID_PEMINJAM='"+id+"' AND STATUS='N')");
+                    + "WHERE (ID_PEMINJAM='" + id + "' AND STATUS='N')");
             int index = 0;
             while (rs.next()) {
                 p[index] = new Pinjam();
@@ -110,19 +155,32 @@ public class Pinjam {
         }
         return p;
     }
-    public static int cekPeminjaman(String id) {
+
+    public static Pinjam[] getHistory(String id) {
         Connection conn = null;
         Statement st = null;
         ResultSet rs = null;
         conn = DatabaseManager.getDBConnection();
-        int cek = 0;
+        Pinjam[] p = null;
         try {
             st = conn.createStatement();
-            rs = st.executeQuery("SELECT COUNT (*) FROM PTI_PINJAM WHERE"
-                    + "(ID_PEMINJAM='" + id + "' AND STATUS='N')");
+            rs = st.executeQuery("SELECT COUNT (*) TOTAL FROM PTI_PINJAM "
+                    + "WHERE (ID_PEMINJAM='" + id + "')");
             rs.next();
-            cek = Integer.parseInt(rs.getString(1));
-
+            p = new Pinjam[rs.getInt(1)];
+            rs = st.executeQuery("SELECT * FROM PTI_PINJAM "
+                    + "WHERE (ID_PEMINJAM='" + id + "')");
+            int index = 0;
+            while (rs.next()) {
+                p[index] = new Pinjam();
+                p[index].setID_Peminjam(rs.getString(1));
+                p[index].setID_Buku(rs.getString(2));
+                p[index].setTanggal_pinjam(rs.getString(3));
+                p[index].setWaktu_pinjam(rs.getInt(4));
+                p[index].setTanggal_kembali(rs.getString(5));
+                p[index].setStatus(rs.getString(6));
+                index++;
+            }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         } finally {
@@ -134,18 +192,53 @@ public class Pinjam {
                 System.out.println(ex.getMessage());
             }
         }
-        return cek;
+        return p;
     }
 
-    public static String Pengembalian(String kembali, String IDbuku, String IDanggota) {
-        String text = null;
+    public static boolean getPeminjaman(String id, String isbn) {
+        Connection conn = null;
+        Statement st = null;
+        ResultSet rs = null;
+        boolean hasil=false;
+        Pinjam p = new Pinjam();
+        conn = DatabaseManager.getDBConnection();
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery("SELECT * FROM PEMINJAMAN WHERE"
+                    + "(ID='" + id + "' AND STATUS='N' "
+                    + "AND ISBN='"+isbn+"')");
+            rs.next();
+            p.setID_Peminjam(rs.getString(1));
+            p.setID_Buku(rs.getString(2));
+            p.setTanggal_pinjam(rs.getString(3));
+            p.setWaktu_pinjam(rs.getInt(4));
+            p.setTanggal_kembali(rs.getString(5));
+            p.setStatus(rs.getString(6));
+            hasil=true;
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        } finally {
+            try {
+                rs.close();
+                st.close();
+                conn.close();
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        return hasil;
+    }
+
+    public static boolean Pengembalian(String kembali, String IDbuku, String IDanggota) {
+        boolean text = false;
         Connection conn = null;
         PreparedStatement ps = null;
         Statement st = null;
         ResultSet rs = null;
         conn = DatabaseManager.getDBConnection();
         try {
-            ps = conn.prepareCall("UPDATE PTI_PINJAM SET TANGGAL_KEMBALI=TO_DATE(?, 'DD-MM-YYYY'), "
+            ps = conn.prepareCall("UPDATE PTI_PINJAM SET TANGGAL_KEMBALI="
+                    + "TO_DATE(?, 'DD-MM-YYYY HH24:MI:SS'), "
                     + "STATUS='Y' "
                     + "WHERE ID_PEMINJAM=? AND ID_BUKU=?");
             ps.setString(1, kembali);
@@ -153,6 +246,7 @@ public class Pinjam {
             ps.setString(3, IDbuku);
             ps.executeUpdate();
             conn.commit();
+            text=true;
         } catch (SQLException ex) {
 
         } finally {

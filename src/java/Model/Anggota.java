@@ -11,6 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 /**
  *
@@ -85,7 +87,7 @@ public class Anggota {
                     + "ID='" + id + "' AND PASSWORD='" + pass + "'");
             rs.next();
             int nilai = Integer.parseInt(rs.getString(1));
-            if (nilai==0) {
+            if (nilai == 0) {
                 return false;
             }
         } catch (SQLException ex) {
@@ -196,10 +198,22 @@ public class Anggota {
         Connection conn = null;
         PreparedStatement ps = null;
         conn = DatabaseManager.getDBConnection();
+        
+         String timeStamp = new SimpleDateFormat("yyMMdd").format(Calendar.getInstance().getTime());
+        String number = "000";
+        int count = a.panggilID(timeStamp) + 1;
+        if (count < 10) {
+            number = "00" + String.valueOf(count);
+        } else if (count < 100) {
+            number = "0" + String.valueOf(count);
+        } else {
+            number = String.valueOf(count);
+        }
+        
         try {
             ps = conn.prepareCall("INSERT INTO PTI_ANGGOTA VALUES"
                     + "(?,?,?,?,?,?)");
-            ps.setString(1, a.getID_Angota());
+            ps.setString(1, (timeStamp+number));
             ps.setString(2, a.getNama());
             ps.setString(3, a.getEmail());
             ps.setString(4, a.getNo_tlp());
@@ -271,23 +285,73 @@ public class Anggota {
             }
         }
     }
+    public static Anggota[] getListAnggota(String id) {
+        Connection conn = null;
+        Statement st = null;
+        ResultSet rs = null;
+        conn = DatabaseManager.getDBConnection();
+        Anggota a[] = null;
+        try {
+            st = conn.createStatement();
+            if (!id.equals("")) {
+                rs = st.executeQuery("SELECT COUNT (*) TOTAL FROM PTI_ANGGOTA WHERE "
+                        + "(ID=" + id + ")");
+                rs.next();
+                a = new Anggota[rs.getInt(1)];
+                rs = st.executeQuery("SELECT * FROM PTI_ANGGOTA WHERE "
+                        + "(ID=" + id + ")");
+            } else {
+                rs = st.executeQuery("SELECT COUNT (*) TOTAL FROM PTI_ANGGOTA");
+                rs.next();
+                a = new Anggota[rs.getInt(1)];
+                rs = st.executeQuery("SELECT * FROM PTI_ANGGOTA");
+            }
+            int index = 0;
+            while (rs.next()) {
+                a[index] = new Anggota();
+                a[index].setID_Angota(rs.getString(1));
+                a[index].setNama(rs.getString(2));
+                a[index].setEmail(rs.getString(3));
+                a[index].setNo_tlp(rs.getString(4));
+                a[index].setAlamat(rs.getString(5));
+                a[index].setPassword(rs.getString(6));
+                index++;
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        } finally {
+            try {
+                rs.close();
+                st.close();
+                conn.close();
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        return a;
+    }
 
-    public static void simpanPeminjaman(Pinjam p) {
+    public static boolean simpanPeminjaman(Pinjam p) {
         String text = null;
         Connection conn = null;
         PreparedStatement ps = null;
         conn = DatabaseManager.getDBConnection();
         try {
-            ps = conn.prepareCall("INSERT INTO PTI_PINJAM "
-                    + "VALUES(?, ?, TO_DATE(?, 'DD-MM-YYYY'),?,NULL,'N')");
-            ps.setString(1, p.getID_Peminjam());
-            ps.setString(2, p.getID_Buku());
-            ps.setString(3, p.getTanggal_pinjam());
-            ps.setInt(4, p.getWaktu_pinjam());
-            ps.executeUpdate();
-            conn.commit();
-            text = "Data sudah ditambahkan";
-
+            if (Buku.cekBuku(p.getID_Buku())) {
+                ps = conn.prepareCall("INSERT INTO PTI_PINJAM "
+                        + "VALUES(?, ?, TO_DATE(?, 'DD-MM-YYYY HH24:MI:SS'),?,"
+                        + "TO_DATE(?, 'DD-MM-YYYY HH24:MI:SS'),'N')");
+                ps.setString(1, p.getID_Peminjam());
+                ps.setString(2, p.getID_Buku());
+                ps.setString(3, p.getTanggal_pinjam());
+                ps.setInt(4, p.getWaktu_pinjam());
+                ps.setString(5, p.getTanggal_kembali());
+                ps.executeUpdate();
+                conn.commit();
+                text = "Data sudah ditambahkan";
+            } else {
+                return false;
+            }
         } catch (SQLException ex) {
         } finally {
             try {
@@ -296,6 +360,7 @@ public class Anggota {
             } catch (SQLException ex) {
             }
         }
+        return true;
     }
 
     public static Pinjam[] getListPeminjaman(String id) {

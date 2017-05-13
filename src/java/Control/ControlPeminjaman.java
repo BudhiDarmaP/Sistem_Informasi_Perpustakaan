@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -42,8 +44,14 @@ public class ControlPeminjaman extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
         try (PrintWriter out = response.getWriter()) {
+            //menambahkan kalender
+            GregorianCalendar cal = (GregorianCalendar) GregorianCalendar.getInstance();
+            cal.add(Calendar.WEEK_OF_YEAR, 1);
             //deklarasi kelas dan timeStamp
-            String timeStamp = new SimpleDateFormat("ddMMyyyy").format(Calendar.getInstance().getTime());
+            String timeStamp = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
+            Date nextWeek = cal.getTime();
+            String df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(nextWeek);
+            //deklarasi
             Pinjam p = new Pinjam();
             Anggota a = new Anggota();
             String id = null;
@@ -71,7 +79,8 @@ public class ControlPeminjaman extends HttpServlet {
             p.setID_Buku(pinjam);
             p.setTanggal_pinjam(timeStamp);
             p.setWaktu_pinjam(7);
-            a.simpanPeminjaman(p);
+            p.setTanggal_kembali(df);
+            Anggota.simpanPeminjaman(p);
             int sedia = Buku.cekKetersediaan(p.getID_Buku());
             Buku.UpdateKetersediaan(p.getID_Buku(), (sedia - 1));
             this.tampil(request, response, "Peminjaman Tersimpan");
