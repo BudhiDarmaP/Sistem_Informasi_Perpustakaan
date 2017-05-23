@@ -5,6 +5,7 @@
  */
 package WebService;
 
+import Model.Buku;
 import Model.Pinjam;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
@@ -33,7 +34,6 @@ public class GetHistoryResource {
     public JsonObject getJson(@QueryParam("id") String id) {
         // Ambil list buku dari database sesuai query
         Pinjam[] pinjam = Pinjam.getHistory(id);
-
         // Buat object JsonObject builder untuk dikirim
         JsonObjectBuilder JsonBuku = Json.createObjectBuilder();
 
@@ -51,6 +51,7 @@ public class GetHistoryResource {
             objectPinjam[i].add("isbn", pinjam[i].getID_Buku());
             objectPinjam[i].add("waktu", pinjam[i].getWaktu_pinjam());
             objectPinjam[i].add("status", pinjam[i].getStatus());
+            objectPinjam[i].add("judul", Buku.infoBuku(pinjam[i].getID_Buku()).getJudul());
             arrayPinjam.add(objectPinjam[i]);
         }
 

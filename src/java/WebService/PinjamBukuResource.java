@@ -51,6 +51,8 @@ public class PinjamBukuResource {
         int test = Anggota.cekAnggota(id);
         if (sedia < 1 && test!=0) {
             hasil = "Peminjaman Gagal";
+            //tambah hasil ke json pinjam
+            pinjam.add("Hasil", hasil);
         } else {
             //simpan peminjaman
             boolean a = Anggota.simpanPeminjaman(p);
@@ -61,18 +63,19 @@ public class PinjamBukuResource {
                 hasil = "Peminjaman Berhasil";
                 // Buat array object pinjam builder
                 pinjam = Json.createObjectBuilder();
+                pinjam.add("Hasil", hasil);
                 pinjam.add("tgl_pinjam", p.getTanggal_pinjam());
                 pinjam.add("tgl_kembali", p.getTanggal_kembali());
                 pinjam.add("status", p.getID_Peminjam());
                 pinjam.add("isbn", p.getID_Buku());
-                pinjam.add("lama pinjam", p.getWaktu_pinjam());
+                pinjam.add("lama_pinjam", p.getWaktu_pinjam());
             } else {
                 //kembalikan false
                 hasil = "Peminjaman Gagal";
+                //tambah hasil ke Json pinjam
+                pinjam.add("Hasil", hasil);
             }
         }
-        //tambah hasil ke Json pinjam
-        pinjam.add("Hasil", hasil);
         // Build json object yang akan dikirim
         JsonObject pinjamJsonObject = pinjam.build();
         //kembalikan json

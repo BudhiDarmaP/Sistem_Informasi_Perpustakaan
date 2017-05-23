@@ -204,9 +204,9 @@ public class Pinjam {
         conn = DatabaseManager.getDBConnection();
         try {
             st = conn.createStatement();
-            rs = st.executeQuery("SELECT * FROM PEMINJAMAN WHERE"
-                    + "(ID='" + id + "' AND STATUS='N' "
-                    + "AND ISBN='"+isbn+"')");
+            rs = st.executeQuery("SELECT * FROM PTI_PINJAM WHERE ("
+                    + "ID_PEMINJAM='" + id + "' AND STATUS='N' "
+                    + "AND ID_BUKU='"+isbn+"')");
             rs.next();
             p.setID_Peminjam(rs.getString(1));
             p.setID_Buku(rs.getString(2));

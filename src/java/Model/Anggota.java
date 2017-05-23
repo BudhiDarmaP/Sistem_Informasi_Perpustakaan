@@ -199,21 +199,10 @@ public class Anggota {
         PreparedStatement ps = null;
         conn = DatabaseManager.getDBConnection();
         
-         String timeStamp = new SimpleDateFormat("yyMMdd").format(Calendar.getInstance().getTime());
-        String number = "000";
-        int count = a.panggilID(timeStamp) + 1;
-        if (count < 10) {
-            number = "00" + String.valueOf(count);
-        } else if (count < 100) {
-            number = "0" + String.valueOf(count);
-        } else {
-            number = String.valueOf(count);
-        }
-        
         try {
             ps = conn.prepareCall("INSERT INTO PTI_ANGGOTA VALUES"
                     + "(?,?,?,?,?,?)");
-            ps.setString(1, (timeStamp+number));
+            ps.setString(1, a.getID_Angota());
             ps.setString(2, a.getNama());
             ps.setString(3, a.getEmail());
             ps.setString(4, a.getNo_tlp());
@@ -339,7 +328,7 @@ public class Anggota {
         try {
             if (Buku.cekBuku(p.getID_Buku())) {
                 ps = conn.prepareCall("INSERT INTO PTI_PINJAM "
-                        + "VALUES(?, ?, TO_DATE(?, 'DD-MM-YYYY HH24:MI:SS'),?,"
+                        + "VALUES(?, ?, TO_DATE(?, 'DD-MM-YYYY HH24:MI:SS'), ?, "
                         + "TO_DATE(?, 'DD-MM-YYYY HH24:MI:SS'),'N')");
                 ps.setString(1, p.getID_Peminjam());
                 ps.setString(2, p.getID_Buku());

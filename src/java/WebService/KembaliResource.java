@@ -33,7 +33,7 @@ public class KembaliResource {
         //deklarasi hasil
         String hasil = null;
         //panggil buku
-        Buku b = Buku.getBuku(isbn);
+        Buku b = Buku.infoBuku(isbn);
         //deklarasi kelas dan timeStamp
         String timeStamp = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
         //deklarasi pinjam
@@ -51,14 +51,15 @@ public class KembaliResource {
                 hasil = "Pengembalian Berhasil";
                 //update copy
                 Buku.UpdateKetersediaan(isbn, (sedia + 1));
+                //tambah hasil ke Json pinjam
+                kembali.add("Hasil", hasil);
             }
-        }
-        else{
+        } else {
             //kembalikan false
             hasil = "Pengembalian Gagal";
+            //tambah hasil ke Json pinjam
+            kembali.add("Hasil", hasil);
         }
-        //tambah hasil ke Json pinjam
-        kembali.add("Hasil", hasil);
         // Build json object yang akan dikirim
         JsonObject kembaliJsonObject = kembali.build();
         //kembalikan json

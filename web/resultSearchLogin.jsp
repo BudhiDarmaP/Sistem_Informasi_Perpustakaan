@@ -58,7 +58,7 @@
 
             <!--Banner-->                                            
             <section id="banner">
-                <form action="resultSearchLogin" method="get">
+                <form action="resultSearchLogin.jsp" method="get">
                     <table>
                         <tr><td><input type="text" name="key" id="email" placeholder="Cari Buku" />
                         <tr><td><input type="submit" value="Cari"/>

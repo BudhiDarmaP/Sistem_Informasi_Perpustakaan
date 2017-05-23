@@ -1,5 +1,13 @@
 
+import Model.Anggota;
 import Model.Buku;
+import Model.Pinjam;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import javax.json.Json;
+import javax.json.JsonObjectBuilder;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -18,10 +26,15 @@ public class NewMain {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        Buku[] buku = Buku.getListPencarian("");
-        for (int i = 0; i < buku.length; i++) {
-            System.out.println(buku[i].getJudul());
-        }
+//        Anggota a= new Anggota();
+//        a.setID_Angota("145314045");
+//        a.setNama("Sekar");
+//        a.setEmail("email@gmail.com");
+//        a.setNo_tlp("0812345678912");
+//        a.setAlamat("Entah");
+//        a.setPassword("123");
+//        a.tambahAnggota(a);
+        System.out.println(Pinjam.getPeminjaman("001230517", "9781449356569"));
     }
     
 }
