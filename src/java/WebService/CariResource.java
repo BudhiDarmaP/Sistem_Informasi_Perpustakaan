@@ -16,8 +16,10 @@ public class CariResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public JsonObject getJson(@QueryParam("query")String query) {
+        //ubah query dengan tanda + ke spasi
+        String cari = query.replace("+", " ");
         // Ambil list buku dari database sesuai query
-        Buku[] buku = Buku.getListPencarian(query);
+        Buku[] buku = Buku.getListPencarian(cari);
         
         // Buat object JsonObject builder untuk dikirim
         JsonObjectBuilder JsonBuku = Json.createObjectBuilder();
